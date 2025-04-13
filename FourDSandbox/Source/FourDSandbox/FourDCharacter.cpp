@@ -16,7 +16,7 @@ AFourDCharacter::AFourDCharacter()
 	playerCamera->SetupAttachment(RootComponent);
 
 	// offset height of camera
-	playerCamera->SetRelativeLocation(FVector(0.0f, 0.0f, 64.0f));
+	playerCamera->SetRelativeLocation(FVector(0.0f, 0.0f, 65.0f));
 
 	// let controller control camera
 	playerCamera->bUsePawnControlRotation = true;

@@ -36,6 +36,12 @@
     <ClCompile Include="..\..\Source\FourDSandbox\FourDCharacter.h">
       <Filter>Source\FourDSandbox</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\FourDSandbox\FourDHallway.cpp">
+      <Filter>Source\FourDSandbox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FourDSandbox\FourDHallway.h">
+      <Filter>Source\FourDSandbox</Filter>
+    </ClCompile>
     <None Include="..\..\Source\FourDSandbox\FourDSandbox.Build.cs">
       <Filter>Source\FourDSandbox</Filter>
     </None>
