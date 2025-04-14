@@ -35,7 +35,7 @@ struct Z_Construct_UClass_AFourDCharacter_Statics
 		{ "ModuleRelativePath", "FourDCharacter.h" },
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_dimensionW_MetaData[] = {
-		{ "Category", "4D Properties" },
+		{ "Category", "4D Position" },
 #if !UE_BUILD_SHIPPING
 		{ "Comment", "// UPROPERTY allows variable dimensionW to be editable in UE\n" },
 #endif
@@ -109,14 +109,14 @@ AFourDCharacter::~AFourDCharacter() {}
 // End Class AFourDCharacter
 
 // Begin Registration
-struct Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics
+struct Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AFourDCharacter, AFourDCharacter::StaticClass, TEXT("AFourDCharacter"), &Z_Registration_Info_UClass_AFourDCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AFourDCharacter), 1346383453U) },
+		{ Z_Construct_UClass_AFourDCharacter, AFourDCharacter::StaticClass, TEXT("AFourDCharacter"), &Z_Registration_Info_UClass_AFourDCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AFourDCharacter), 2750593957U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_410555670(TEXT("/Script/FourDSandbox"),
-	Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_1753045691(TEXT("/Script/FourDSandbox"),
+	Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);
 // End Registration
