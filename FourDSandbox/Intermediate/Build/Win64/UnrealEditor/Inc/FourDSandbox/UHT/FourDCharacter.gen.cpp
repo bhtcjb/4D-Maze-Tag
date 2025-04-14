@@ -109,14 +109,23 @@ AFourDCharacter::~AFourDCharacter() {}
 // End Class AFourDCharacter
 
 // Begin Registration
+<<<<<<< Updated upstream
 struct Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics
+=======
+struct Z_CompiledInDeferFile_FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics
+>>>>>>> Stashed changes
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
 		{ Z_Construct_UClass_AFourDCharacter, AFourDCharacter::StaticClass, TEXT("AFourDCharacter"), &Z_Registration_Info_UClass_AFourDCharacter, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AFourDCharacter), 2750593957U) },
 	};
 };
+<<<<<<< Updated upstream
 static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_1753045691(TEXT("/Script/FourDSandbox"),
 	Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo),
+=======
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_410555670(TEXT("/Script/FourDSandbox"),
+	Z_CompiledInDeferFile_FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_Statics::ClassInfo),
+>>>>>>> Stashed changes
 	nullptr, 0,
 	nullptr, 0);
 // End Registration

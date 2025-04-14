@@ -2,6 +2,10 @@
 	"BuildId": "37670630",
 	"Modules": 
 	{
+<<<<<<< Updated upstream
 		"FourDSandbox": "UnrealEditor-FourDSandbox-0024.dll"
+=======
+		"FourDSandbox": "UnrealEditor-FourDSandbox.dll"
+>>>>>>> Stashed changes
 	}
 }

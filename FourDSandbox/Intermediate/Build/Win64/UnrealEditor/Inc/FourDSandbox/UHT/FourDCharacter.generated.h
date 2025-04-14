@@ -14,7 +14,11 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define FOURDSANDBOX_FourDCharacter_generated_h
 
+<<<<<<< Updated upstream
 #define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_INCLASS_NO_PURE_DECLS \
+=======
+#define FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_INCLASS_NO_PURE_DECLS \
+>>>>>>> Stashed changes
 private: \
 	static void StaticRegisterNativesAFourDCharacter(); \
 	friend struct Z_Construct_UClass_AFourDCharacter_Statics; \
@@ -23,7 +27,11 @@ public: \
 	DECLARE_SERIALIZER(AFourDCharacter)
 
 
+<<<<<<< Updated upstream
 #define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_ENHANCED_CONSTRUCTORS \
+=======
+#define FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_ENHANCED_CONSTRUCTORS \
+>>>>>>> Stashed changes
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AFourDCharacter(AFourDCharacter&&); \
@@ -35,12 +43,21 @@ public: \
 	NO_API virtual ~AFourDCharacter();
 
 
+<<<<<<< Updated upstream
 #define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_14_PROLOG
 #define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
 	FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_INCLASS_NO_PURE_DECLS \
 	FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_ENHANCED_CONSTRUCTORS \
+=======
+#define FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_14_PROLOG
+#define FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_GENERATED_BODY \
+PRAGMA_DISABLE_DEPRECATION_WARNINGS \
+public: \
+	FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_INCLASS_NO_PURE_DECLS \
+	FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h_17_ENHANCED_CONSTRUCTORS \
+>>>>>>> Stashed changes
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
@@ -48,7 +65,11 @@ PRAGMA_ENABLE_DEPRECATION_WARNINGS
 template<> FOURDSANDBOX_API UClass* StaticClass<class AFourDCharacter>();
 
 #undef CURRENT_FILE_ID
+<<<<<<< Updated upstream
 #define CURRENT_FILE_ID FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h
+=======
+#define CURRENT_FILE_ID FID_Users_notki_OneDrive_Documents_GitHub_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDCharacter_h
+>>>>>>> Stashed changes
 
 
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

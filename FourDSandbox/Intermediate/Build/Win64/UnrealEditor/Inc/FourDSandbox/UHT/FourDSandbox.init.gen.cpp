@@ -17,13 +17,22 @@ void EmptyLinkFunctionForGeneratedCodeFourDSandbox_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
+<<<<<<< Updated upstream
 				0xEA90D3B5,
 				0x94E12E87,
+=======
+				0x25A1C067,
+				0x18CCC340,
+>>>>>>> Stashed changes
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_FourDSandbox.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_FourDSandbox.OuterSingleton;
 	}
+<<<<<<< Updated upstream
 	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_FourDSandbox(Z_Construct_UPackage__Script_FourDSandbox, TEXT("/Script/FourDSandbox"), Z_Registration_Info_UPackage__Script_FourDSandbox, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xEA90D3B5, 0x94E12E87));
+=======
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_FourDSandbox(Z_Construct_UPackage__Script_FourDSandbox, TEXT("/Script/FourDSandbox"), Z_Registration_Info_UPackage__Script_FourDSandbox, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x25A1C067, 0x18CCC340));
+>>>>>>> Stashed changes
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
