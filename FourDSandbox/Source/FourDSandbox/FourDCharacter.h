@@ -54,6 +54,3 @@ public:
 	// set up upward downward camera movements
 	void turnUpDown(float magnitude);
 };
-
-
-
