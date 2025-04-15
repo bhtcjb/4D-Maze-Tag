@@ -6,7 +6,4 @@
 AMyGameModeBase::AMyGameModeBase()
 {
     DefaultPawnClass = AFourDCharacter::StaticClass(); 
-
 }
-
-
