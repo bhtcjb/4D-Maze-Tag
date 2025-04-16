@@ -8,29 +8,30 @@
 #include "Math/Matrix.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
-#include "FourDHallway.generated.h"
+#include "FourDBlock.generated.h"
 
 // struct for storing 4D points
 USTRUCT()
 struct FourDPoints
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere)
-	float x;
+    UPROPERTY(EditAnywhere)
+    float x;
 
-	UPROPERTY(EditAnywhere)
-	float y;
+    UPROPERTY(EditAnywhere)
+    float y;
 
-	UPROPERTY(EditAnywhere)
-	float z;
+    UPROPERTY(EditAnywhere)
+    float z;
 
-	UPROPERTY(EditAnywhere)
-	float w;
+    UPROPERTY(EditAnywhere)
+    float w;
 
-	FourDPoints(const float& newX = 0.0f, const float& newY = 0.0f, 
+    FourDPoints(const float& newX = 0.0f, const float& newY = 0.0f,
         const float& newZ = 0.0f, const float& newW = 0.0f) :
-        x(newX), y(newY), z(newZ), w(newW) {}
+        x(newX), y(newY), z(newZ), w(newW) {
+    }
 };
 
 // struct for storing 3 planes to act as the axis of 4D space for rotation
@@ -52,13 +53,13 @@ struct FourDPlanes
 };
 
 UCLASS()
-class FOURDSANDBOX_API AFourDHallway : public AActor
+class FOURDSANDBOX_API AFourDBlock : public AActor
 {
     GENERATED_BODY()
 
 public:
     // Sets default values for this actor's properties
-    AFourDHallway();
+    AFourDBlock();
 
 protected:
     // Called when the game starts or when spawned
@@ -99,16 +100,16 @@ public:
     // creates matrix to use to apply transformations
     void createMatrix();
 
-    // creates vertices for a 4D hallway
+    // creates vertices for a 4D block
     // createMatrix() should be called prior
-    void createHallway();
+    void createBlock();
 
     // creates 3D mesh from 4D vertices
     // createMatrix and createMesh should be called prior
     void createMesh();
 
 private:
-    // helper for createHallway(), multiplies one vertex by the transformation matrix
+    // helper for createBlock(), multiplies one vertex by the transformation matrix
     FourDPoints transformVertex(const FourDPoints& vertex) const;
 
     // helper for createMesh(), slices 8 3D vertices from the 4D vertices within slice range

@@ -1,8 +1,6 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "FourDCharacter.h"
-
 
 // Sets default values
 AFourDCharacter::AFourDCharacter()
@@ -23,23 +21,18 @@ AFourDCharacter::AFourDCharacter()
 
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
 }
 
 // Called when the game starts or when spawned
 void AFourDCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-
-
 }
 
 // Called every frame
 void AFourDCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-
 }
 
 // Called to bind functionality to input
@@ -47,14 +40,12 @@ void AFourDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-
 	// bind movement inputs - these are set up in project settings under input, axis mappings
 	PlayerInputComponent->BindAxis("ForwardBackMovement", this, &AFourDCharacter::forwardBackMovement);
 	PlayerInputComponent->BindAxis("RightLeftMovement", this, &AFourDCharacter::rightLeftMovement);
 	PlayerInputComponent->BindAxis("FourthDimensionMovement", this, &AFourDCharacter::fourthDimensionMovement);
 	PlayerInputComponent->BindAxis("TurnRightLeft", this, &AFourDCharacter::turnRightLeft);
 	PlayerInputComponent->BindAxis("TurnUpDown", this, &AFourDCharacter::turnUpDown);
-
 }
 
 void AFourDCharacter::forwardBackMovement(float magnitude)
@@ -86,7 +77,6 @@ void AFourDCharacter::rightLeftMovement(float magnitude)
 		// move right or left relative to the direction of camera
 		AddMovementInput(rightLeftDirection, magnitude);
 	}
-
 }
 
 void AFourDCharacter::fourthDimensionMovement(float magnitude)
@@ -97,9 +87,7 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 		// we must calculate manually, magnitude * speed * time
 		// multiplying by time is necessary for smooth movement across framerates
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
-
 	}
-
 }
 
 void AFourDCharacter::turnRightLeft(float magnitude)

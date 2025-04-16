@@ -1,14 +1,14 @@
 
 
 
-#include "FourDHallway.h"
+#include "FourDBlock.h"
 
 // Sets default values
-AFourDHallway::AFourDHallway()
+AFourDBlock::AFourDBlock()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
-    
+    // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
+    PrimaryActorTick.bCanEverTick = true;
+
     // mesh that can be drawn to denoted vertices dynamically
     mesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("mesh"));
     RootComponent = mesh; // makes it so other componants interact with the mesh and not some other part of the object
@@ -23,7 +23,7 @@ AFourDHallway::AFourDHallway()
 
     // main 4D creation algorithm, will be called in Tick function for dynamic changes
     createMatrix(); // do matrix math for translating and rotating a 4D object
-    createHallway(); // creates vertices for 4D cube based on matrix and geometry
+    createBlock(); // creates vertices for 4D cube based on matrix and geometry
     createMesh(); // draws 3D mesh for the 4D slice
 
     // load and set basic wall from starter content, this can be set to whatever
@@ -33,39 +33,39 @@ AFourDHallway::AFourDHallway()
 }
 
 // Called when the game starts or when spawned
-void AFourDHallway::BeginPlay()
+void AFourDBlock::BeginPlay()
 {
-	Super::BeginPlay();
-	
+    Super::BeginPlay();
+
 }
 
 // Called every frame
-void AFourDHallway::Tick(float DeltaTime)
+void AFourDBlock::Tick(float DeltaTime)
 {
-	Super::Tick(DeltaTime);
+    Super::Tick(DeltaTime);
 
     // call every tick for dynamic changes
     sliceWidth = endGeometry.w - startGeometry.w;
     createMatrix();
-    createHallway();
+    createBlock();
     createMesh();
 }
 
 #if WITH_EDITOR
-void AFourDHallway::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
+void AFourDBlock::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
 {
     Super::PostEditChangeProperty(PropertyChangedEvent);
 
     // allows dynamic changes if trying to control from editor
     sliceWidth = endGeometry.w - startGeometry.w;
     createMatrix();
-    createHallway();
+    createBlock();
     createMesh();
 }
 #endif
 
-void AFourDHallway::createMatrix()
-{      
+void AFourDBlock::createMatrix()
+{
     // reset matrix
     transformMatrix = FMatrix::Identity;
 
@@ -97,9 +97,9 @@ void AFourDHallway::createMatrix()
 
 }
 
-void AFourDHallway::createHallway()
+void AFourDBlock::createBlock()
 {
-    // a 4d hallway's gonna have 16 vertices
+    // a 4d block's gonna have 16 vertices
     TArray<FourDPoints> verticesBefore = {
         // order does matter here for mapping the mesh
         // the mesh is indexed according to order of the vertices, which will be set in the updateMesh() function
@@ -125,7 +125,7 @@ void AFourDHallway::createHallway()
     };
 
     // clear previous contents
-    vertices.Empty(); 
+    vertices.Empty();
 
     // fill with transformations
     for (int i = 0; i < verticesBefore.Num(); ++i)
@@ -136,14 +136,14 @@ void AFourDHallway::createHallway()
 };
 
 
-void AFourDHallway::createMesh()
+void AFourDBlock::createMesh()
 {
     // make slice and update mesh with slice
     updateMesh(slice4DPlane());
 }
 
 
-FourDPoints AFourDHallway::transformVertex(const FourDPoints& vertex) const
+FourDPoints AFourDBlock::transformVertex(const FourDPoints& vertex) const
 {
     FourDPoints transformedVertex;
 
@@ -171,7 +171,7 @@ FourDPoints AFourDHallway::transformVertex(const FourDPoints& vertex) const
     return transformedVertex;
 }
 
-TArray<FVector> AFourDHallway::slice4DPlane()
+TArray<FVector> AFourDBlock::slice4DPlane()
 {
     TArray<FVector> slicedVertices;
 
@@ -188,16 +188,16 @@ TArray<FVector> AFourDHallway::slice4DPlane()
     return slicedVertices;
 }
 
-void AFourDHallway::updateMesh(const TArray<FVector>& slicedVertices)
+void AFourDBlock::updateMesh(const TArray<FVector>& slicedVertices)
 {
-    // two triangles per face, which i set in a clockwise rotation so that the faces will face inward
+    // two triangles per face, which i set in a counter-clockwise rotation so that the faces will face outward
     TArray<int32> indices = {
-        0, 2, 1, 0, 3, 2,
-        4, 5, 6, 4, 6, 7,
-        3, 6, 2, 3, 7, 6,
-        0, 1, 5, 0, 5, 4,
-        0, 7, 3, 0, 4, 7,
-        1, 2, 6, 1, 6, 5
+        0, 1, 2, 0, 2, 3,
+        4, 6, 5, 4, 7, 6,
+        3, 2, 6, 3, 6, 7,
+        0, 5, 1, 0, 4, 5,
+        0, 3, 7, 0, 7, 4,
+        1, 6, 2, 1, 5, 6
     };
     TArray<FVector> normals;
     TArray<FVector2D> UVs;
@@ -227,8 +227,8 @@ void AFourDHallway::updateMesh(const TArray<FVector>& slicedVertices)
         tangents,    // for texture orientation       
         true              // collision set true
     );
-        
 
-    
+
+
 }
 

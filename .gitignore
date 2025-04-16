@@ -655,3 +655,9 @@ FodyWeavers.xsd
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,windows,macos,clion,unrealengine
+
+
+# Manually removed FourDSandbox folders
+FourDSandbox/Saved/
+FourDSandbox/Intermediate/
+FourDSandbox/Binaries/
