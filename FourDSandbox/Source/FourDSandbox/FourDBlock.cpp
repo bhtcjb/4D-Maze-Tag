@@ -31,6 +31,7 @@ void AFourDBlock::BeginPlay()
 {
     Super::BeginPlay();
 
+    
 }
 
 // Called every frame

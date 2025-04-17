@@ -14,7 +14,28 @@ AFourDObject::AFourDObject()
 
     sliceWidth = 0; // this should be set to a value in derived class
 
+    startW = 0; // will be set at BeginPlay
 
+}
+
+// Called when the game starts or when spawned
+void AFourDObject::BeginPlay()
+{
+    Super::BeginPlay();
+
+    ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
+    if (AFourDCharacter* fourDChar = Cast<AFourDCharacter>(player))
+    {
+        fourDChar->wChangeEvent.AddDynamic(this, &AFourDObject::updateW);
+    }
+
+    startW = translation.w;
+
+}
+
+void AFourDObject::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
 }
 
 void AFourDObject::createMatrix()
@@ -76,4 +97,9 @@ FourDPoints AFourDObject::transformVertex(const FourDPoints& vertex) const
         vertex.w * transformMatrix.M[3][3];
 
     return transformedVertex;
+}
+
+void AFourDObject::updateW(float newW)
+{
+    translation.w = newW - startW;
 }
