@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include "FourDCharacter.h"
+#include "Kismet/GameplayStatics.h"
 #include "ProceduralMeshComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
@@ -62,11 +64,11 @@ public:
 
 protected:
 	// Called when the game starts or when spawned
-	virtual void BeginPlay() override PURE_VIRTUAL(AFourDObject::BeginPlay, );
+	virtual void BeginPlay() override;
 
 public:	
 	// Called every frame
-	virtual void Tick(float DeltaTime) override PURE_VIRTUAL(AFourDObject::Tick, );
+	virtual void Tick(float DeltaTime) override;
 
     // TArray is UE's dynamic array type
     UPROPERTY(VisibleAnywhere, Category = "Geometry")
@@ -84,6 +86,9 @@ public:
 
     UPROPERTY(VisibleAnywhere, Category = "Slice Properties")
     float sliceWidth; // determines how much the object can be moved on the W axis without clipping out of the slice
+
+    UPROPERTY(VisibleAnywhere, Category = "Slice Properties")
+    float startW;
 
     UPROPERTY(VisibleAnywhere, Category = "Mesh")
     UProceduralMeshComponent* mesh; // mesh that can be drawn to denoted vertices dynamically
@@ -108,4 +113,9 @@ protected:
 
     // helper for createMesh, constructs the mesh for the 3D slice
     virtual void updateMesh(const TArray<FVector>& slicedVertices) PURE_VIRTUAL(AFourDObject::updateMesh, );
+
+private:
+    UFUNCTION()
+    void updateW(float newW);
+    
 };

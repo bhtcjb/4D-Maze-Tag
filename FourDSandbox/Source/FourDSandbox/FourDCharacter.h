@@ -10,6 +10,7 @@
 #include "GameFramework/Character.h"
 #include "FourDCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWChange, float, newW);
 
 UCLASS()
 class FOURDSANDBOX_API AFourDCharacter : public ACharacter
@@ -23,6 +24,9 @@ public:
 	// UPROPERTY allows variable dimensionW to be editable in UE
 	UPROPERTY(EditAnywhere, Category = "4D Position")
 	float dimensionW; // position variable for 4th dimension
+
+	UPROPERTY(VisibleAnywhere, Category = "4D Position")
+	FWChange wChangeEvent;
 
 	// add camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
