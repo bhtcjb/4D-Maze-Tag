@@ -14,30 +14,16 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 #endif
 #define FOURDSANDBOX_FourDBlock_generated_h
 
-#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_17_GENERATED_BODY \
-	friend struct Z_Construct_UScriptStruct_FourDPoints_Statics; \
-	FOURDSANDBOX_API static class UScriptStruct* StaticStruct();
-
-
-template<> FOURDSANDBOX_API UScriptStruct* StaticStruct<struct FourDPoints>();
-
-#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_41_GENERATED_BODY \
-	friend struct Z_Construct_UScriptStruct_FourDPlanes_Statics; \
-	FOURDSANDBOX_API static class UScriptStruct* StaticStruct();
-
-
-template<> FOURDSANDBOX_API UScriptStruct* StaticStruct<struct FourDPlanes>();
-
-#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_58_INCLASS_NO_PURE_DECLS \
+#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_18_INCLASS_NO_PURE_DECLS \
 private: \
 	static void StaticRegisterNativesAFourDBlock(); \
 	friend struct Z_Construct_UClass_AFourDBlock_Statics; \
 public: \
-	DECLARE_CLASS(AFourDBlock, AActor, COMPILED_IN_FLAGS(0 | CLASS_Config), CASTCLASS_None, TEXT("/Script/FourDSandbox"), NO_API) \
+	DECLARE_CLASS(AFourDBlock, AFourDObject, COMPILED_IN_FLAGS(0 | CLASS_Config), CASTCLASS_None, TEXT("/Script/FourDSandbox"), NO_API) \
 	DECLARE_SERIALIZER(AFourDBlock)
 
 
-#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_58_ENHANCED_CONSTRUCTORS \
+#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_18_ENHANCED_CONSTRUCTORS \
 private: \
 	/** Private move- and copy-constructors, should never be used */ \
 	AFourDBlock(AFourDBlock&&); \
@@ -49,12 +35,12 @@ public: \
 	NO_API virtual ~AFourDBlock();
 
 
-#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_55_PROLOG
-#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_58_GENERATED_BODY \
+#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_15_PROLOG
+#define FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_18_GENERATED_BODY \
 PRAGMA_DISABLE_DEPRECATION_WARNINGS \
 public: \
-	FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_58_INCLASS_NO_PURE_DECLS \
-	FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_58_ENHANCED_CONSTRUCTORS \
+	FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_18_INCLASS_NO_PURE_DECLS \
+	FID_Users_blakt_Documents_Unreal_Projects_4D_Playground_FourDSandbox_Source_FourDSandbox_FourDBlock_h_18_ENHANCED_CONSTRUCTORS \
 private: \
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
 
