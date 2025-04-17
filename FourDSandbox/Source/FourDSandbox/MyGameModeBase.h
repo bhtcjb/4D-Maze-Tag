@@ -3,6 +3,7 @@
 #pragma once
 
 #include "FourDCharacter.h"
+#include "MainHUD.h"
 #include "TestFunctions.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
@@ -19,5 +20,5 @@ class FOURDSANDBOX_API AMyGameModeBase : public AGameModeBase
 public:
 	AMyGameModeBase();
 
-	virtual void StartPlay() override;
+	void StartPlay() override;
 };
