@@ -7,3 +7,10 @@ AMyGameModeBase::AMyGameModeBase()
 {
     DefaultPawnClass = AFourDCharacter::StaticClass(); 
 }
+
+void AMyGameModeBase::StartPlay()
+{
+    Super::StartPlay();
+
+    TestFunctions test;
+}
