@@ -10,7 +10,7 @@
 #include "GameFramework/Character.h"
 #include "FourDCharacter.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWChange, float, newW);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWChange, float, newW); // sets up event to broadcast 
 
 UCLASS()
 class FOURDSANDBOX_API AFourDCharacter : public ACharacter
@@ -26,7 +26,7 @@ public:
 	float dimensionW; // position variable for 4th dimension
 
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
-	FWChange wChangeEvent;
+	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
 
 	// add camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
