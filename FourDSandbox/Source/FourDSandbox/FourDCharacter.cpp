@@ -22,8 +22,8 @@ AFourDCharacter::AFourDCharacter()
 	playerCamera->SetupAttachment(playerMesh);
 
 	// offset height of camera
-	playerCamera->SetRelativeLocation(FVector(-150.0f, 0.0f, 160.0f));
-	playerCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+	playerCamera->SetRelativeLocation(FVector(0.0f, -200.0f, 160.0f));
+	playerCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
 	playerCamera->FieldOfView = 120.0f;
 
 	// let controller control camera
