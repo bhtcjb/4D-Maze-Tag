@@ -88,7 +88,7 @@ public:
     float sliceWidth; // determines how much the object can be moved on the W axis without clipping out of the slice
 
     UPROPERTY(VisibleAnywhere, Category = "Slice Properties")
-    float startW;
+    float startW; // sets object's starting position at begin play to calculate changes in W
 
     UPROPERTY(VisibleAnywhere, Category = "Mesh")
     UProceduralMeshComponent* mesh; // mesh that can be drawn to denoted vertices dynamically
@@ -115,6 +115,7 @@ protected:
     virtual void updateMesh(const TArray<FVector>& slicedVertices) PURE_VIRTUAL(AFourDObject::updateMesh, );
 
 private:
+    // helper for BeginPlay() event setup to calculate new W during play
     UFUNCTION()
     void updateW(float newW);
     

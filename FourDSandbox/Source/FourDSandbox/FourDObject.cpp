@@ -23,10 +23,13 @@ void AFourDObject::BeginPlay()
 {
     Super::BeginPlay();
 
-    ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0);
-    if (AFourDCharacter* fourDChar = Cast<AFourDCharacter>(player))
+    // set up to change W when event is broadcast from character
+    ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0); // find character in scene
+    AFourDCharacter* fourDPlayer = Cast<AFourDCharacter>(player); // attempt to cast to FourDCharacter
+    if (fourDPlayer != nullptr) 
     {
-        fourDChar->wChangeEvent.AddDynamic(this, &AFourDObject::updateW);
+        // set to change dynamically
+        fourDPlayer->wChangeEvent.AddDynamic(this, &AFourDObject::updateW);
     }
 
     startW = translation.w;

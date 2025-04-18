@@ -90,6 +90,7 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 		// multiplying by time is necessary for smooth movement across framerates
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
 
+		// broadcast event to the objects
 		wChangeEvent.Broadcast(dimensionW);
 	}
 }
