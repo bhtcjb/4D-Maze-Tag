@@ -1,17 +1,11 @@
 
-
-
 #include "FourDBlock.h"
 
 // Sets default values
-AFourDBlock::AFourDBlock()
+AFourDBlock::AFourDBlock() : AFourDObject()
 {
     // Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
     PrimaryActorTick.bCanEverTick = true;
-
-    // mesh that can be drawn to denoted vertices dynamically
-    mesh = CreateDefaultSubobject<UProceduralMeshComponent>(TEXT("mesh"));
-    RootComponent = mesh; // makes it so other componants interact with the mesh and not some other part of the object
 
     // determines geometry of the object, use to change length width height etc, 
     startGeometry = FourDPoints(-100.0f, -100.0f, -100.0f, -100.0f); // startGeometry should pretty much always be negative values
@@ -23,7 +17,7 @@ AFourDBlock::AFourDBlock()
 
     // main 4D creation algorithm, will be called in Tick function for dynamic changes
     createMatrix(); // do matrix math for translating and rotating a 4D object
-    createBlock(); // creates vertices for 4D cube based on matrix and geometry
+    createObject(); // creates vertices for 4D cube based on matrix and geometry
     createMesh(); // draws 3D mesh for the 4D slice
 
     // load and set basic wall from starter content, this can be set to whatever
@@ -37,6 +31,7 @@ void AFourDBlock::BeginPlay()
 {
     Super::BeginPlay();
 
+    
 }
 
 // Called every frame
@@ -47,7 +42,7 @@ void AFourDBlock::Tick(float DeltaTime)
     // call every tick for dynamic changes
     sliceWidth = endGeometry.w - startGeometry.w;
     createMatrix();
-    createBlock();
+    createObject();
     createMesh();
 }
 
@@ -59,45 +54,12 @@ void AFourDBlock::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedE
     // allows dynamic changes if trying to control from editor
     sliceWidth = endGeometry.w - startGeometry.w;
     createMatrix();
-    createBlock();
+    createObject();
     createMesh();
 }
 #endif
 
-void AFourDBlock::createMatrix()
-{
-    // reset matrix
-    transformMatrix = FMatrix::Identity;
-
-    // rotation algorithm explained here
-    // https://math.stackexchange.com/questions/1402362/can-rotations-in-4d-be-given-an-explicit-matrix-form
-    // do rotation along X-Y plane
-    transformMatrix.M[0][0] = FMath::Cos(rotation.xY);
-    transformMatrix.M[0][1] = -FMath::Sin(rotation.xY);
-    transformMatrix.M[1][0] = FMath::Sin(rotation.xY);
-    transformMatrix.M[1][1] = FMath::Cos(rotation.xY);
-
-    // do rotation along X-Z plane
-    transformMatrix.M[0][0] *= FMath::Cos(rotation.xZ);
-    transformMatrix.M[0][2] = -FMath::Sin(rotation.xZ);
-    transformMatrix.M[2][0] = FMath::Sin(rotation.xZ);
-    transformMatrix.M[2][2] *= FMath::Cos(rotation.xZ);
-
-    // do rotation along X-W plane
-    transformMatrix.M[0][0] *= FMath::Cos(rotation.xW);
-    transformMatrix.M[0][3] = -FMath::Sin(rotation.xW);
-    transformMatrix.M[3][0] = FMath::Sin(rotation.xW);
-    transformMatrix.M[3][3] *= FMath::Cos(rotation.xW);
-
-    // do translation
-    transformMatrix.M[3][0] = translation.x;
-    transformMatrix.M[3][1] = translation.y;
-    transformMatrix.M[3][2] = translation.z;
-    transformMatrix.M[3][3] = translation.w;
-
-}
-
-void AFourDBlock::createBlock()
+void AFourDBlock::createObject()
 {
     // a 4d block's gonna have 16 vertices
     TArray<FourDPoints> verticesBefore = {
@@ -135,40 +97,10 @@ void AFourDBlock::createBlock()
 
 };
 
-
 void AFourDBlock::createMesh()
 {
     // make slice and update mesh with slice
     updateMesh(slice4DPlane());
-}
-
-
-FourDPoints AFourDBlock::transformVertex(const FourDPoints& vertex) const
-{
-    FourDPoints transformedVertex;
-
-    // multiply each axis position of the vertex by the transfom matrix
-    transformedVertex.x = vertex.x * transformMatrix.M[0][0] +
-        vertex.y * transformMatrix.M[1][0] +
-        vertex.z * transformMatrix.M[2][0] +
-        vertex.w * transformMatrix.M[3][0];
-
-    transformedVertex.y = vertex.x * transformMatrix.M[0][1] +
-        vertex.y * transformMatrix.M[1][1] +
-        vertex.z * transformMatrix.M[2][1] +
-        vertex.w * transformMatrix.M[3][1];
-
-    transformedVertex.z = vertex.x * transformMatrix.M[0][2] +
-        vertex.y * transformMatrix.M[1][2] +
-        vertex.z * transformMatrix.M[2][2] +
-        vertex.w * transformMatrix.M[3][2];
-
-    transformedVertex.w = vertex.x * transformMatrix.M[0][3] +
-        vertex.y * transformMatrix.M[1][3] +
-        vertex.z * transformMatrix.M[2][3] +
-        vertex.w * transformMatrix.M[3][3];
-
-    return transformedVertex;
 }
 
 TArray<FVector> AFourDBlock::slice4DPlane()

@@ -10,6 +10,7 @@
 #include "GameFramework/Pawn.h"
 #include "FourDCharacter.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWChange, float, newW); // sets up event to broadcast 
 
 UCLASS()
 class FOURDSANDBOX_API AFourDCharacter : public APawn
@@ -35,6 +36,9 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = "Speed")
 	float RotateSpeed;
+
+	UPROPERTY(VisibleAnywhere, Category = "4D Position")
+	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
 
 	// add camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
