@@ -110,7 +110,7 @@ void AFourDRoad::UpdateCrossSection()
 		if (GeomComp)
 		{
 			GeomComp->SetRelativeTransform(FTransform(FRotator::ZeroRotator, FVector::ZeroVector,
-				FVector(1.0f + dimensionW * 0.5, 1.0f + dimensionW * 0.5f, 1.0f + dimensionW * 0.5f)));
+				FVector(1.0f + dimensionW * 0.5f, 1.0f + dimensionW * 0.5f, 1.0f + dimensionW * 0.5f)));
 		}
 	}
 }

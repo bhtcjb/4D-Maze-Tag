@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FourDCharacter.h"
 
@@ -6,18 +6,28 @@
 AFourDCharacter::AFourDCharacter()
 {
 	dimensionW = 0.0f;
+	location = FVector(0.0f, 0.0f, 0.0f);
+	MoveSpeed = 2.0f;
+	RotateSpeed = 2.0f;
 
 	// initialize camera to default
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 
+	// set mesh for character
+	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
+	RootComponent = playerMesh; // Set the root component to the mesh
+	playerMesh->SetWorldRotation(FRotator(0.0f, 90.0f, 0.0f));
+
 	// attach camera to player
-	playerCamera->SetupAttachment(RootComponent);
+	playerCamera->SetupAttachment(playerMesh);
 
 	// offset height of camera
-	playerCamera->SetRelativeLocation(FVector(0.0f, 0.0f, 65.0f));
+	playerCamera->SetRelativeLocation(FVector(-150.0f, 0.0f, 160.0f));
+	playerCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
+	playerCamera->FieldOfView = 120.0f;
 
 	// let controller control camera
-	playerCamera->bUsePawnControlRotation = true;
+	//playerCamera->bUsePawnControlRotation = true;
 
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -50,60 +60,54 @@ void AFourDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AFourDCharacter::forwardBackMovement(float magnitude)
 {
-	if (Controller && magnitude != 0.0f) // 0.0f means no input, thus we should disregard it
-	{
-		// get where camera is facing
-		FRotator camera = Controller->GetControlRotation();
+	FVector newLocation = GetActorLocation();
+	newLocation += GetActorForwardVector() * magnitude * MoveSpeed;
+	SetActorLocation(newLocation);
+	location = newLocation;
 
-		// find forward direction
-		FVector forwardDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::X);
+	/*if (magnitude != 0.0f) {
+		AddMovementInput(GetActorForwardVector(), magnitude * speed);
+		dimensionY += magnitude * speed;
+	}*/
 
-		// move forward in direction of camera
-		AddMovementInput(forwardDirection, magnitude);
-	}
 }
 
 
 void AFourDCharacter::rightLeftMovement(float magnitude)
 {
-	if (Controller && magnitude != 0.0f)
-	{
-		// get where camera is facing
-		FRotator camera = Controller->GetControlRotation();
+	FVector newLocation = GetActorLocation();
+	newLocation += GetActorRightVector() * magnitude * MoveSpeed;
+	SetActorLocation(newLocation);
+	location = newLocation;
 
-		// find right left axis direction
-		FVector rightLeftDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::Y);
-
-		// move right or left relative to the direction of camera
-		AddMovementInput(rightLeftDirection, magnitude);
-	}
+	/*if (magnitude != 0.0f) {
+		AddMovementInput(GetActorRightVector(), magnitude * speed);
+		dimensionX += magnitude * speed;
+	}*/
 }
 
 void AFourDCharacter::fourthDimensionMovement(float magnitude)
 {
 	if (magnitude != 0.0f)
 	{
-		float speed = GetCharacterMovement()->MaxWalkSpeed; // because we don't have AddMovementInput() for 4d,
+		 // because we don't have AddMovementInput() for 4d,
 		// we must calculate manually, magnitude * speed * time
 		// multiplying by time is necessary for smooth movement across framerates
-		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
+		dimensionW += magnitude * GetWorld()->DeltaTimeSeconds;
 	}
 }
 
 void AFourDCharacter::turnRightLeft(float magnitude)
 {
-	if (magnitude != 0.0f)
-	{
-		// yaw means left right, moves yaw
-		AddControllerYawInput(magnitude);
-	}
+	FRotator newRotation = GetActorRotation();
+	newRotation.Yaw += magnitude * RotateSpeed;
+	SetActorRotation(newRotation);
 }
 
 void AFourDCharacter::turnUpDown(float magnitude)
 {
-	if (magnitude != 0.0f)
-	{
-		// pitch means up down, moves pitch
-		AddControllerPitchInput(magnitude);
-	}
+	// pitch means up down, moves pitch
+	/*FRotator newRotation = GetActorRotation();
+	newRotation.Roll += magnitude * RotateSpeed;
+	SetActorRotation(newRotation);*/
 }

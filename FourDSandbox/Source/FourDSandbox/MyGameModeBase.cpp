@@ -6,4 +6,5 @@
 AMyGameModeBase::AMyGameModeBase()
 {
     DefaultPawnClass = AFourDCharacter::StaticClass(); 
+	HUDClass = AMainHUD::StaticClass();
 }

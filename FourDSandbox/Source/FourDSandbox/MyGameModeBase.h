@@ -3,6 +3,7 @@
 #pragma once
 
 #include "FourDCharacter.h"
+#include "MainHUD.h"
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
 #include "MyGameModeBase.generated.h"

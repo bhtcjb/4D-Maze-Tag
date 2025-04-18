@@ -7,12 +7,12 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CoreMinimal.h"
-#include "GameFramework/Character.h"
+#include "GameFramework/Pawn.h"
 #include "FourDCharacter.generated.h"
 
 
 UCLASS()
-class FOURDSANDBOX_API AFourDCharacter : public ACharacter
+class FOURDSANDBOX_API AFourDCharacter : public APawn
 {
 	GENERATED_BODY()
 
@@ -22,11 +22,27 @@ public:
 
 	// UPROPERTY allows variable dimensionW to be editable in UE
 	UPROPERTY(EditAnywhere, Category = "4D Position")
-	float dimensionW; // position variable for 4th dimension
+	float dimensionW;
+
+	UPROPERTY(EditAnywhere, Category = "3D Position")
+	FVector location;
+
+	UPROPERTY(EditAnywhere, Category = "3D Position")
+	FRotator rotation;
+
+	UPROPERTY(EditAnywhere, Category = "Speed")
+	float MoveSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Speed")
+	float RotateSpeed;
 
 	// add camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* playerCamera;
+
+	// Add character mesh
+	UPROPERTY(VisibleAnywhere, Category = "Player")
+	UStaticMeshComponent* playerMesh;
 
 protected:
 	// Called when the game starts or when spawned
