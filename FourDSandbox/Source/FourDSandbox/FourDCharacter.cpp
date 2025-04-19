@@ -10,24 +10,18 @@ AFourDCharacter::AFourDCharacter()
 	MoveSpeed = 2.0f;
 	RotateSpeed = 2.0f;
 
-	// initialize camera to default
-	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
-
 	// set mesh for character
 	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
-	RootComponent = playerMesh; // Set the root component to the mesh
-	playerMesh->SetWorldRotation(FRotator(0.0f, 90.0f, 0.0f));
+	playerMesh->SetupAttachment(GetCapsuleComponent()); // Set the root component to the mesh
 
-	// attach camera to player
-	playerCamera->SetupAttachment(playerMesh);
+	// initialize camera to default
+	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	playerCamera->SetupAttachment(GetCapsuleComponent());
 
 	// offset height of camera
 	playerCamera->SetRelativeLocation(FVector(0.0f, -200.0f, 160.0f));
-	playerCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+	playerCamera->SetRelativeRotation(FRotator(0.0f, 90.0f, 0.0f));
 	playerCamera->FieldOfView = 120.0f;
-
-	// let controller control camera
-	//playerCamera->bUsePawnControlRotation = true;
 
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -62,37 +56,20 @@ void AFourDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AFourDCharacter::forwardBackMovement(float magnitude)
 {
-	FVector newLocation = GetActorLocation();
-	newLocation += GetActorForwardVector() * magnitude * MoveSpeed;
-	SetActorLocation(newLocation);
-	location = newLocation;
-
-	/*if (magnitude != 0.0f) {
-		AddMovementInput(GetActorForwardVector(), magnitude * speed);
-		dimensionY += magnitude * speed;
-	}*/
-
+	AddMovementInput(GetActorRightVector(), magnitude * MoveSpeed);
 }
 
 
 void AFourDCharacter::rightLeftMovement(float magnitude)
 {
-	FVector newLocation = GetActorLocation();
-	newLocation += GetActorRightVector() * magnitude * MoveSpeed;
-	SetActorLocation(newLocation);
-	location = newLocation;
-
-	/*if (magnitude != 0.0f) {
-		AddMovementInput(GetActorRightVector(), magnitude * speed);
-		dimensionX += magnitude * speed;
-	}*/
+	AddMovementInput(GetActorForwardVector(), magnitude * MoveSpeed * -1);
 }
 
 void AFourDCharacter::fourthDimensionMovement(float magnitude)
 {
 	if (magnitude != 0.0f)
 	{
-		float speed = GetCharacterMovement()->MaxWalkSpeed * .01; // because we don't have AddMovementInput() for 4d,
+		float speed = 1; // because we don't have AddMovementInput() for 4d,
 		// we must calculate manually, magnitude * speed * time
 		// multiplying by time is necessary for smooth movement across framerates
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
@@ -104,9 +81,7 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 
 void AFourDCharacter::turnRightLeft(float magnitude)
 {
-	FRotator newRotation = GetActorRotation();
-	newRotation.Yaw += magnitude * RotateSpeed;
-	SetActorRotation(newRotation);
+	AddControllerYawInput(magnitude * RotateSpeed);
 }
 
 void AFourDCharacter::turnUpDown(float magnitude)
