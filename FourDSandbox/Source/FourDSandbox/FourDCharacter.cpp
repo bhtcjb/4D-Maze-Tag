@@ -10,11 +10,33 @@ AFourDCharacter::AFourDCharacter()
 	// initialize camera to default
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 
+	// set mesh for character
+	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
+
 	// attach camera to player
 	playerCamera->SetupAttachment(RootComponent);
 
+	// attach mesh to player
+	playerMesh->SetupAttachment(RootComponent);
+
+	// set the default mesh
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> defaultMesh(TEXT("/Game/Assets/andy"));
+	if (defaultMesh.Succeeded())
+	{
+		playerMesh->SetStaticMesh(defaultMesh.Object);
+	}
+
 	// offset height of camera
 	playerCamera->SetRelativeLocation(FVector(0.0f, 0.0f, 65.0f));
+
+	// offset height of mesh
+	playerMesh->SetRelativeLocation(FVector(-4.0f, 0.0f, -95.0f));
+
+	// correct rotation
+	playerMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	// correct height
+	playerMesh->SetRelativeScale3D(FVector(0.85f, 0.85f, 0.85f));
 
 	// let controller control camera
 	playerCamera->bUsePawnControlRotation = true;
@@ -35,6 +57,13 @@ void AFourDCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	// update the mesh rotation to match the camera's rotation
+	if (playerCamera && playerMesh)
+	{
+		FRotator cameraRotation = playerCamera->GetComponentRotation();
+		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
+		playerMesh->SetWorldRotation(meshRotation);
+	}
 }
 
 // Called to bind functionality to input

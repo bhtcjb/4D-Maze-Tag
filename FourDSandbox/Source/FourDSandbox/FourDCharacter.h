@@ -32,6 +32,10 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* playerCamera;
 
+	// add character mesh
+	UPROPERTY(VisibleAnywhere, Category = "Player")
+	UStaticMeshComponent* playerMesh;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
