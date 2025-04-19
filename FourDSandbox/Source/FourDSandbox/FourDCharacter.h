@@ -4,7 +4,7 @@
 
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
-#include "Components/StaticMeshComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
@@ -23,19 +23,7 @@ public:
 
 	// UPROPERTY allows variable dimensionW to be editable in UE
 	UPROPERTY(EditAnywhere, Category = "4D Position")
-	float dimensionW;
-
-	UPROPERTY(EditAnywhere, Category = "3D Position")
-	FVector location;
-
-	UPROPERTY(EditAnywhere, Category = "3D Position")
-	FRotator rotation;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float MoveSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float RotateSpeed;
+	float dimensionW; // position variable for 4th dimension
 
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
 	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
@@ -44,7 +32,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* playerCamera;
 
-	// Add character mesh
+	// add character mesh
 	UPROPERTY(VisibleAnywhere, Category = "Player")
 	UStaticMeshComponent* playerMesh;
 

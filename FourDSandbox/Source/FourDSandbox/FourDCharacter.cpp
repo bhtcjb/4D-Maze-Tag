@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #include "FourDCharacter.h"
 
@@ -6,26 +6,40 @@
 AFourDCharacter::AFourDCharacter()
 {
 	dimensionW = 0.0f;
-	location = FVector(0.0f, 0.0f, 0.0f);
-	MoveSpeed = 2.0f;
-	RotateSpeed = 2.0f;
 
 	// initialize camera to default
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 
 	// set mesh for character
 	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
-	
+
 	// attach camera to player
-	playerCamera->SetupAttachment(playerMesh);
+	playerCamera->SetupAttachment(RootComponent);
 
 	// attach mesh to player
 	playerMesh->SetupAttachment(RootComponent);
-	
+
+	// set the default mesh
+	static ConstructorHelpers::FObjectFinder<UStaticMesh> defaultMesh(TEXT("/Game/Assets/andy"));
+	if (defaultMesh.Succeeded())
+	{
+		playerMesh->SetStaticMesh(defaultMesh.Object);
+	}
+
 	// offset height of camera
-	//playerCamera->SetRelativeLocation(FVector(0.0f, -200.0f, 160.0f));
-	//playerCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
-	//playerCamera->FieldOfView = 120.0f;
+	playerCamera->SetRelativeLocation(FVector(0.0f, 0.0f, 65.0f));
+
+	// offset height of mesh
+	playerMesh->SetRelativeLocation(FVector(-4.0f, 0.0f, -95.0f));
+
+	// correct rotation
+	playerMesh->SetRelativeRotation(FRotator(0.0f, -90.0f, 0.0f));
+
+	// correct height
+	playerMesh->SetRelativeScale3D(FVector(0.85f, 0.85f, 0.85f));
+
+	// let controller control camera
+	playerCamera->bUsePawnControlRotation = true;
 
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -43,14 +57,13 @@ void AFourDCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-    // update the mesh rotation to match the camera's rotation
-    if (playerCamera && playerMesh)
-    {
-        FRotator cameraRotation = playerCamera->GetComponentRotation();
-	FRotator meshRotation(0.0f, cameraRotation.Yaw, 0.0f);
-        playerMesh->SetWorldRotation(meshRotation);
-    }
-
+	// update the mesh rotation to match the camera's rotation
+	if (playerCamera && playerMesh)
+	{
+		FRotator cameraRotation = playerCamera->GetComponentRotation();
+		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
+		playerMesh->SetWorldRotation(meshRotation);
+	}
 }
 
 // Called to bind functionality to input
