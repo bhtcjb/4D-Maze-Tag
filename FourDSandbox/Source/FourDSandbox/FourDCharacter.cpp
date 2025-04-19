@@ -47,7 +47,8 @@ void AFourDCharacter::Tick(float DeltaTime)
     if (playerCamera && playerMesh)
     {
         FRotator cameraRotation = playerCamera->GetComponentRotation();
-        playerMesh->SetWorldRotation(cameraRotation);
+	FRotator meshRotation(0.0f, cameraRotation.Yaw, 0.0f);
+        playerMesh->SetWorldRotation(meshRotation);
     }
 
 }
@@ -67,30 +68,33 @@ void AFourDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AFourDCharacter::forwardBackMovement(float magnitude)
 {
-	FVector newLocation = GetActorLocation();
-	newLocation += GetActorForwardVector() * magnitude * MoveSpeed;
-	SetActorLocation(newLocation);
-	location = newLocation;
+	if (Controller && magnitude != 0.0f) // 0.0f means no input, thus we should disregard it
+	{
+		// get where camera is facing
+		FRotator camera = Controller->GetControlRotation();
 
-	/*if (magnitude != 0.0f) {
-		AddMovementInput(GetActorForwardVector(), magnitude * speed);
-		dimensionY += magnitude * speed;
-	}*/
+		// find forward direction
+		FVector forwardDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::X);
 
+		// move forward in direction of camera
+		AddMovementInput(forwardDirection, magnitude);
+	}
 }
 
 
 void AFourDCharacter::rightLeftMovement(float magnitude)
 {
-	FVector newLocation = GetActorLocation();
-	newLocation += GetActorRightVector() * magnitude * MoveSpeed;
-	SetActorLocation(newLocation);
-	location = newLocation;
+	if (Controller && magnitude != 0.0f)
+	{
+		// get where camera is facing
+		FRotator camera = Controller->GetControlRotation();
 
-	/*if (magnitude != 0.0f) {
-		AddMovementInput(GetActorRightVector(), magnitude * speed);
-		dimensionX += magnitude * speed;
-	}*/
+		// find right left axis direction
+		FVector rightLeftDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::Y);
+
+		// move right or left relative to the direction of camera
+		AddMovementInput(rightLeftDirection, magnitude);
+	}
 }
 
 void AFourDCharacter::fourthDimensionMovement(float magnitude)
@@ -109,15 +113,18 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 
 void AFourDCharacter::turnRightLeft(float magnitude)
 {
-	FRotator newRotation = GetActorRotation();
-	newRotation.Yaw += magnitude * RotateSpeed;
-	SetActorRotation(newRotation);
+	if (magnitude != 0.0f)
+	{
+		// yaw means left right, moves yaw
+		AddControllerYawInput(magnitude);
+	}
 }
 
 void AFourDCharacter::turnUpDown(float magnitude)
 {
-	// pitch means up down, moves pitch
-	FRotator newRotation = GetActorRotation();
-	newRotation.Roll += magnitude * RotateSpeed;
-	SetActorRotation(newRotation);
+	if (magnitude != 0.0f)
+	{
+		// pitch means up down, moves pitch
+		AddControllerPitchInput(magnitude);
+	}
 }
