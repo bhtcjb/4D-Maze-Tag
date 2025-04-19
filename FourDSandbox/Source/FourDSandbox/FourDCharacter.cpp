@@ -58,7 +58,7 @@ void AFourDCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// update the mesh rotation to match the camera's rotation
-	if (playerCamera && playerMesh)
+	if (playerCamera != nullptr && playerMesh != nullptr)
 	{
 		FRotator cameraRotation = playerCamera->GetComponentRotation();
 		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
