@@ -15,19 +15,17 @@ AFourDCharacter::AFourDCharacter()
 
 	// set mesh for character
 	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
-	RootComponent = playerMesh; // Set the root component to the mesh
-	playerMesh->SetWorldRotation(FRotator(0.0f, 90.0f, 0.0f));
-
+	
 	// attach camera to player
 	playerCamera->SetupAttachment(playerMesh);
 
+	// attach mesh to player
+	playerMesh->SetupAttachment(RootComponent);
+	
 	// offset height of camera
-	playerCamera->SetRelativeLocation(FVector(0.0f, -200.0f, 160.0f));
-	playerCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
-	playerCamera->FieldOfView = 120.0f;
-
-	// let controller control camera
-	//playerCamera->bUsePawnControlRotation = true;
+	//playerCamera->SetRelativeLocation(FVector(0.0f, -200.0f, 160.0f));
+	//playerCamera->SetRelativeRotation(FRotator(0.0f, 0.0f, 90.0f));
+	//playerCamera->FieldOfView = 120.0f;
 
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
@@ -44,6 +42,13 @@ void AFourDCharacter::BeginPlay()
 void AFourDCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+    // update the mesh rotation to match the camera's rotation
+    if (playerCamera && StaticMeshComponent)
+    {
+        FRotator cameraRotation = playerCamera->GetComponentRotation();
+        playerMesh->SetWorldRotation(cameraRotation);
+    }
 
 }
 
@@ -112,7 +117,7 @@ void AFourDCharacter::turnRightLeft(float magnitude)
 void AFourDCharacter::turnUpDown(float magnitude)
 {
 	// pitch means up down, moves pitch
-	/*FRotator newRotation = GetActorRotation();
+	FRotator newRotation = GetActorRotation();
 	newRotation.Roll += magnitude * RotateSpeed;
-	SetActorRotation(newRotation);*/
+	SetActorRotation(newRotation);
 }
