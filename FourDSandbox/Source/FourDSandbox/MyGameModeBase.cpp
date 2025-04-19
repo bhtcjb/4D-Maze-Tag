@@ -7,13 +7,24 @@ AMyGameModeBase::AMyGameModeBase()
 {
     DefaultPawnClass = AFourDCharacter::StaticClass(); 
     HUDClass = AMainHUD::StaticClass();
-	bReplicates = true;
+
+	bUseSeamlessTravel = true;
 }
 
 void AMyGameModeBase::StartPlay()
 {
     Super::StartPlay();
-	UGameplayStatics::CreatePlayer(this, 1, true);
 
     TestFunctions test;
+}
+
+void AMyGameModeBase::PostLogin(APlayerController* NewPlayer)
+{
+	Super::PostLogin(NewPlayer);
+  
+}
+
+void AMyGameModeBase::Logout(AController* Exiting)
+{
+	Super::Logout(Exiting);
 }

@@ -13,6 +13,8 @@ AFourDCharacter::AFourDCharacter()
 	// set mesh for character
 	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
 	playerMesh->SetupAttachment(GetCapsuleComponent()); // Set the root component to the mesh
+	playerMesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr, TEXT("StaticMesh'/Game/Assets/andy.andy'")));
+	playerMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -100.0f)); // set mesh location
 
 	// initialize camera to default
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
@@ -25,13 +27,29 @@ AFourDCharacter::AFourDCharacter()
 
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+
 }
 
 // Called when the game starts or when spawned
 void AFourDCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
+void AFourDCharacter::PossessedBy(AController* NewController) {
+	Super::PossessedBy(NewController);
+	if (APlayerController* PC = Cast<APlayerController>(NewController)) {
+		PC->SetViewTarget(this);
+		UE_LOG(LogTemp, Log, TEXT("Possessed by %s, view target set (Role: %d)"), *PC->GetName(), (int32)GetLocalRole());
+	}
+}
+
+void AFourDCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AFourDCharacter, dimensionW);
 }
 
 // Called every frame
