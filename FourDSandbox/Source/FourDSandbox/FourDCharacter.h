@@ -7,13 +7,13 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "CoreMinimal.h"
-#include "GameFramework/Pawn.h"
+#include "GameFramework/Character.h"
 #include "FourDCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWChange, float, newW); // sets up event to broadcast 
 
 UCLASS()
-class FOURDSANDBOX_API AFourDCharacter : public APawn
+class FOURDSANDBOX_API AFourDCharacter : public ACharacter
 {
 	GENERATED_BODY()
 
