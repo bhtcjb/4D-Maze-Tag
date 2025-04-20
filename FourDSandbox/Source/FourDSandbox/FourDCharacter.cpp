@@ -132,13 +132,14 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 {
 	if (magnitude != 0.0f)
 	{
-		float speed = 1; // because we don't have AddMovementInput() for 4d,
+		float speed = 1.5f; // because we don't have AddMovementInput() for 4d,
 		// we must calculate manually, magnitude * speed * time
 		// multiplying by time is necessary for smooth movement across framerates
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
 
 		// broadcast event to the objects
 		wChangeEvent.Broadcast(dimensionW);
+		
 	}
 }
 

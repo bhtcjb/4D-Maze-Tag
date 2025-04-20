@@ -118,5 +118,5 @@ private:
     // helper for BeginPlay() event setup to calculate new W during play
     UFUNCTION()
     void updateW(float newW);
-    
+   
 };
