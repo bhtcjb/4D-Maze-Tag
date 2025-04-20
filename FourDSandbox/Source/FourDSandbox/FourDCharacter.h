@@ -46,7 +46,7 @@ public:
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* playerCamera;
 
-	// Add character mesh
+	// add character mesh
 	UPROPERTY(VisibleAnywhere, Category = "Player")
 	UStaticMeshComponent* playerMesh;
 
