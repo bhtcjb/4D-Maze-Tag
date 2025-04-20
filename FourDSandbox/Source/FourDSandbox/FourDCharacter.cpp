@@ -6,12 +6,15 @@
 AFourDCharacter::AFourDCharacter()
 {
 	dimensionW = 0.0f;
-	
-	// initialize camera to default
-	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
+	MoveSpeed = 2.0f;
+	RotateSpeed = 1.0f;
+	TagRange = 200.0f;
+	Tagged = false;
 
 	// set mesh for character
 	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
+	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
+
 
 	// attach camera to player
 	playerCamera->SetupAttachment(RootComponent);
@@ -55,17 +58,9 @@ void AFourDCharacter::BeginPlay()
 	Super::BeginPlay();
 }
 
-void AFourDCharacter::PossessedBy(AController* NewController) {
-	Super::PossessedBy(NewController);
-	if (APlayerController* PC = Cast<APlayerController>(NewController)) {
-		PC->SetViewTarget(this);
-		UE_LOG(LogTemp, Log, TEXT("Possessed by %s, view target set (Role: %d)"), *PC->GetName(), (int32)GetLocalRole());
-	}
-}
-
 void AFourDCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AFourDCharacter, dimensionW);
+	DOREPLIFETIME(AFourDCharacter, Tagged);
 }
 
 // Called every frame
@@ -93,38 +88,17 @@ void AFourDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	PlayerInputComponent->BindAxis("FourthDimensionMovement", this, &AFourDCharacter::fourthDimensionMovement);
 	PlayerInputComponent->BindAxis("TurnRightLeft", this, &AFourDCharacter::turnRightLeft);
 	PlayerInputComponent->BindAxis("TurnUpDown", this, &AFourDCharacter::turnUpDown);
+	PlayerInputComponent->BindAxis("Tag", this, &AFourDCharacter::TagPlayer);
 }
 
 void AFourDCharacter::forwardBackMovement(float magnitude)
 {
-	if (Controller && magnitude != 0.0f) // 0.0f means no input, thus we should disregard it
-	{
-		// get where camera is facing
-		FRotator camera = Controller->GetControlRotation();
-
-		// find forward direction
-		FVector forwardDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::X);
-
-		// move forward in direction of camera
-		AddMovementInput(forwardDirection, magnitude);
-	}
-
+	AddMovementInput(GetActorForwardVector(), magnitude * MoveSpeed);
 }
-
 
 void AFourDCharacter::rightLeftMovement(float magnitude)
 {
-	if (Controller != nullptr && magnitude != 0.0f)
-	{
-		// get where camera is facing
-		FRotator camera = Controller->GetControlRotation();
-
-		// find right left axis direction
-		FVector rightLeftDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::Y);
-
-		// move right or left relative to the direction of camera
-		AddMovementInput(rightLeftDirection, magnitude);
-	}
+	AddMovementInput(GetActorRightVector(), magnitude * MoveSpeed);
 
 }
 
@@ -148,12 +122,7 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 
 void AFourDCharacter::turnRightLeft(float magnitude)
 {
-
-	if (magnitude != 0.0f)
-	{
-		// yaw means left right, moves yaw
-		AddControllerYawInput(magnitude);
-	}
+	AddControllerYawInput(magnitude * RotateSpeed);
 
 }
 
@@ -165,3 +134,50 @@ void AFourDCharacter::turnUpDown(float magnitude)
 		AddControllerPitchInput(magnitude);
 	}
 }
+
+void AFourDCharacter::TagPlayer(float clicked)
+{
+	if (Tagged && clicked)
+	{
+		Server_TagOtherPlayer();
+	}
+}
+
+void AFourDCharacter::Server_TagOtherPlayer_Implementation()
+{
+	if (!Tagged) return;
+
+	TArray<FHitResult> HitResults;
+	FCollisionShape Sphere = FCollisionShape::MakeSphere(TagRange);
+	bool IsHit = GetWorld()->SweepMultiByChannel(HitResults, GetActorLocation(), GetActorLocation(),
+		FQuat::Identity, ECC_Pawn, Sphere);
+
+	AFourDCharacter* NewTaggedPlayer = nullptr;
+	for (const FHitResult& Hit : HitResults)
+	{
+		if (AFourDCharacter* OtherPlayer = Cast<AFourDCharacter>(Hit.GetActor()))
+		{
+			if (OtherPlayer != this && !OtherPlayer->Tagged)
+			{
+				NewTaggedPlayer = OtherPlayer;
+				break;
+			}
+		}
+	}
+
+	if (NewTaggedPlayer)
+	{
+		Tagged = false;
+		NewTaggedPlayer->SetTagged(true);
+		UE_LOG(LogTemp, Log, TEXT("%s tagged %s"), *GetName(), *NewTaggedPlayer->GetName());
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Green,
+			FString::Printf(TEXT("%s is now tagged!"), *NewTaggedPlayer->GetName()));
+	}
+}
+
+bool AFourDCharacter::Server_TagOtherPlayer_Validate() { return true; }
+
+FVector AFourDCharacter::GetLocation() const { return location; }
+float AFourDCharacter::GetDimensionW() const { return dimensionW; }
+bool AFourDCharacter::GetTagged() const { return Tagged; }
+void AFourDCharacter::SetTagged(bool tagged) { Tagged = tagged; }

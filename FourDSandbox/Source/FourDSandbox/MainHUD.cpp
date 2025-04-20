@@ -26,11 +26,10 @@ void AMainHUD::DrawHUD()
 
     if (PlayerCharacter) {
         // Format the dimensionW value
-        FString WText = FString::Printf(TEXT("W: %.2f"), //\nX,Y,Z: %.2f,%.2f,%.2f"),
-            PlayerCharacter->dimensionW);
-            //PlayerCharacter->location[0],
-            //PlayerCharacter->location[1],
-            //PlayerCharacter->location[2]);
+		FVector CurrentLocation = PlayerCharacter->GetLocation();
+        FString WText = FString::Printf(TEXT("W: %.2f\nTagged: %d"),
+            PlayerCharacter->GetDimensionW(),
+            (PlayerCharacter->GetTagged()));
 
         // Calculate text size
         float TextWidth, TextHeight;
