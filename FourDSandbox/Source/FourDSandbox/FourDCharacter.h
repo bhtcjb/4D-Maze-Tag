@@ -24,7 +24,7 @@ public:
 	AFourDCharacter();
 
 	// UPROPERTY allows variable dimensionW to be editable in UE
-	UPROPERTY(EditAnywhere, Category = "4D Position")
+	UPROPERTY(EditAnywhere, Category = "4D Position", Replicated)
 	float dimensionW; // position variable for 4th dimension
 
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
