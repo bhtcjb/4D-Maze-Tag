@@ -10,6 +10,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "Net/UnrealNetwork.h"
+#include "Kismet/GameplayStatics.h"
 #include "FourDCharacter.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FWChange, float, newW); // sets up event to broadcast 
@@ -23,42 +24,22 @@ public:
 	// Sets default values for this character's properties
 	AFourDCharacter();
 
-	// UPROPERTY allows variable dimensionW to be editable in UE
-	UPROPERTY(EditAnywhere, Category = "4D Position", Replicated)
-	float dimensionW;
-
-	UPROPERTY(EditAnywhere, Category = "3D Position")
-	FVector location;
-
-	UPROPERTY(EditAnywhere, Category = "3D Position")
-	FRotator rotation;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float MoveSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float RotateSpeed;
-
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
 	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
 
-	// add camera
-	UPROPERTY(VisibleAnywhere, Category = "Camera")
-	UCameraComponent* playerCamera;
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
 
-	// add character mesh
-	UPROPERTY(VisibleAnywhere, Category = "Player")
-	UStaticMeshComponent* playerMesh;
+	FVector GetLocation() const;
+	float GetDimensionW() const;
+	bool GetTagged() const;
+	void SetTagged(bool tagged);
+
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	virtual void PossessedBy(AController* NewController) override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-
-public:
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -77,4 +58,41 @@ public:
 
 	// set up upward downward camera movements
 	void turnUpDown(float magnitude);
+
+	// set up tag function
+	void TagPlayer(float clicked);
+
+	// set up tag server logic
+	UFUNCTION(Server, Reliable, WithValidation)
+	void Server_TagOtherPlayer();
+	bool Server_TagOtherPlayer_Validate();
+	void Server_TagOtherPlayer_Implementation();
+
+private: 
+	// add camera
+	UPROPERTY(VisibleAnywhere, Category = "Camera")
+	UCameraComponent* playerCamera;
+
+	// add character mesh
+	UPROPERTY(VisibleAnywhere, Category = "Player")
+	UStaticMeshComponent* playerMesh;
+
+	// UPROPERTY allows variable dimensionW to be editable in UE
+	UPROPERTY(EditAnywhere, Category = "4D Position")
+	float dimensionW;
+
+	UPROPERTY(EditAnywhere, Category = "3D Position")
+	FVector location;
+
+	UPROPERTY(EditAnywhere, Category = "Speed")
+	float MoveSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Speed")
+	float RotateSpeed;
+
+	UPROPERTY(EditAnywhere, Category = "Gameplay")
+	float TagRange;
+
+	UPROPERTY(Replicated)
+	bool Tagged;
 };
