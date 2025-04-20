@@ -6,7 +6,7 @@
 AFourDCharacter::AFourDCharacter()
 {
 	dimensionW = 0.0f;
-
+	
 	// initialize camera to default
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("CameraComponent"));
 
@@ -43,13 +43,29 @@ AFourDCharacter::AFourDCharacter()
 
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+
+	SetReplicates(true);
+	SetReplicateMovement(true);
+
 }
 
 // Called when the game starts or when spawned
 void AFourDCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+}
 
+void AFourDCharacter::PossessedBy(AController* NewController) {
+	Super::PossessedBy(NewController);
+	if (APlayerController* PC = Cast<APlayerController>(NewController)) {
+		PC->SetViewTarget(this);
+		UE_LOG(LogTemp, Log, TEXT("Possessed by %s, view target set (Role: %d)"), *PC->GetName(), (int32)GetLocalRole());
+	}
+}
+
+void AFourDCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AFourDCharacter, dimensionW);
 }
 
 // Called every frame
@@ -92,12 +108,13 @@ void AFourDCharacter::forwardBackMovement(float magnitude)
 		// move forward in direction of camera
 		AddMovementInput(forwardDirection, magnitude);
 	}
+
 }
 
 
 void AFourDCharacter::rightLeftMovement(float magnitude)
 {
-	if (Controller && magnitude != 0.0f)
+	if (Controller != nullptr && magnitude != 0.0f)
 	{
 		// get where camera is facing
 		FRotator camera = Controller->GetControlRotation();
@@ -108,13 +125,14 @@ void AFourDCharacter::rightLeftMovement(float magnitude)
 		// move right or left relative to the direction of camera
 		AddMovementInput(rightLeftDirection, magnitude);
 	}
+
 }
 
 void AFourDCharacter::fourthDimensionMovement(float magnitude)
 {
 	if (magnitude != 0.0f)
 	{
-		float speed = GetCharacterMovement()->MaxWalkSpeed * .01; // because we don't have AddMovementInput() for 4d,
+		float speed = 1; // because we don't have AddMovementInput() for 4d,
 		// we must calculate manually, magnitude * speed * time
 		// multiplying by time is necessary for smooth movement across framerates
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
@@ -126,11 +144,13 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 
 void AFourDCharacter::turnRightLeft(float magnitude)
 {
+
 	if (magnitude != 0.0f)
 	{
 		// yaw means left right, moves yaw
 		AddControllerYawInput(magnitude);
 	}
+
 }
 
 void AFourDCharacter::turnUpDown(float magnitude)
