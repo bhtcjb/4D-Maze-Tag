@@ -107,7 +107,9 @@ FourDPoints AFourDObject::transformVertex(const FourDPoints& vertex) const
 
 void AFourDObject::updateW(float newW)
 {
+
     translation.w = newW - startW;
+    
 }
 
 
