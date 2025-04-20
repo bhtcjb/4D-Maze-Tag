@@ -31,7 +31,9 @@ void AFourDBlock::BeginPlay()
 {
     Super::BeginPlay();
 
-    
+    UMaterialInterface* material = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Wall"));
+    mesh->SetMaterial(0, material);
+    mesh->MarkRenderStateDirty();
 }
 
 // Called every frame
@@ -44,6 +46,7 @@ void AFourDBlock::Tick(float DeltaTime)
     createMatrix();
     createObject();
     createMesh();
+
 }
 
 #if WITH_EDITOR
@@ -101,6 +104,7 @@ void AFourDBlock::createMesh()
 {
     // make slice and update mesh with slice
     updateMesh(slice4DPlane());
+
 }
 
 TArray<FVector> AFourDBlock::slice4DPlane()
@@ -137,12 +141,36 @@ void AFourDBlock::updateMesh(const TArray<FVector>& slicedVertices)
     TArray<FProcMeshTangent> tangents;
 
     // construct arrays for the following properties
-    for (int i = 0; i < slicedVertices.Num(); ++i)
+    for (int i = 0; i < slicedVertices.Num(); i += 6)
     {
-        normals.Add(FVector(0, 0, 1));
         UVs.Add(FVector2D(0, 0));
-        colors.Add(FColor::White);
+        UVs.Add(FVector2D(1, 0));
+        UVs.Add(FVector2D(1, 1));
+        UVs.Add(FVector2D(0, 1));
+        UVs.Add(FVector2D(0, 1));
+        UVs.Add(FVector2D(1, 0));
+
+        normals.Add(FVector(0, 0, 1));
+        normals.Add(FVector(0, 0, 1));
+        normals.Add(FVector(0, 0, 1));
+        normals.Add(FVector(0, 0, 1));
+        normals.Add(FVector(0, 0, 1));
+        normals.Add(FVector(0, 0, 1));
+
         tangents.Add(FProcMeshTangent(1, 0, 0));
+        tangents.Add(FProcMeshTangent(1, 0, 0));
+        tangents.Add(FProcMeshTangent(1, 0, 0));
+        tangents.Add(FProcMeshTangent(1, 0, 0));
+        tangents.Add(FProcMeshTangent(1, 0, 0));
+        tangents.Add(FProcMeshTangent(1, 0, 0));
+
+        colors.Add(FColor::White);
+        colors.Add(FColor::White);
+        colors.Add(FColor::White);
+        colors.Add(FColor::White);
+        colors.Add(FColor::White);
+        colors.Add(FColor::White);
+
     }
 
     // reset mesh

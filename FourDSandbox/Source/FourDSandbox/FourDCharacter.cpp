@@ -15,6 +15,7 @@ AFourDCharacter::AFourDCharacter()
 	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 
+
 	// attach camera to player
 	playerCamera->SetupAttachment(RootComponent);
 
@@ -68,7 +69,7 @@ void AFourDCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	// update the mesh rotation to match the camera's rotation
-	if (playerCamera && playerMesh)
+	if (playerCamera != nullptr && playerMesh != nullptr)
 	{
 		FRotator cameraRotation = playerCamera->GetComponentRotation();
 		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
@@ -98,25 +99,31 @@ void AFourDCharacter::forwardBackMovement(float magnitude)
 void AFourDCharacter::rightLeftMovement(float magnitude)
 {
 	AddMovementInput(GetActorRightVector(), magnitude * MoveSpeed);
+
 }
 
 void AFourDCharacter::fourthDimensionMovement(float magnitude)
 {
 	if (magnitude != 0.0f)
 	{
-		float speed = 1; // because we don't have AddMovementInput() for 4d,
+		float speed = 2.0f; // because we don't have AddMovementInput() for 4d,
 		// we must calculate manually, magnitude * speed * time
 		// multiplying by time is necessary for smooth movement across framerates
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
 
+		// clamp to ensure user stays within bounds of level
+		dimensionW = FMath::Clamp(dimensionW, -3.0f, 4.0f);
+
 		// broadcast event to the objects
 		wChangeEvent.Broadcast(dimensionW);
+		
 	}
 }
 
 void AFourDCharacter::turnRightLeft(float magnitude)
 {
 	AddControllerYawInput(magnitude * RotateSpeed);
+
 }
 
 void AFourDCharacter::turnUpDown(float magnitude)

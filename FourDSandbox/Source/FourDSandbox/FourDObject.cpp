@@ -30,6 +30,7 @@ void AFourDObject::BeginPlay()
     {
         // set to change dynamically
         fourDPlayer->wChangeEvent.AddDynamic(this, &AFourDObject::updateW);
+        
     }
 
     startW = translation.w;
@@ -39,6 +40,8 @@ void AFourDObject::BeginPlay()
 void AFourDObject::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
+
+  
 }
 
 void AFourDObject::createMatrix()
@@ -104,5 +107,10 @@ FourDPoints AFourDObject::transformVertex(const FourDPoints& vertex) const
 
 void AFourDObject::updateW(float newW)
 {
+
     translation.w = newW - startW;
+    
 }
+
+
+
