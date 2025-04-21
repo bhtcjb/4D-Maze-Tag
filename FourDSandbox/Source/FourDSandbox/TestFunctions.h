@@ -1,7 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// Blake
 
 #pragma once
 
+#include <iostream>
 #include "CoreMinimal.h"
 #include "FourDBlock.h"
 
@@ -16,5 +17,7 @@ public:
 	TestFunctions();
 	void TestCreateMatrix() const;
 	void TestTransformVertex() const;
+	void TestCreateObject() const;
 	void TestSlice4DPlane() const;
+	void TestUpdateW() const;
 };
