@@ -6,7 +6,6 @@
 AMyGameModeBase::AMyGameModeBase()
 {
     DefaultPawnClass = AFourDCharacter::StaticClass();
-    PlayerStateClass = AMyPlayerState::StaticClass();
     HUDClass = AMainHUD::StaticClass();
 
 	bUseSeamlessTravel = true;

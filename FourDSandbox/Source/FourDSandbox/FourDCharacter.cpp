@@ -50,12 +50,6 @@ AFourDCharacter::AFourDCharacter()
 
 }
 
-void AFourDCharacter::Server_SetDimensionW_Implementation(float newW)
-{
-	dimensionW = newW;
-}
-
-
 // Called when the game starts or when spawned
 void AFourDCharacter::BeginPlay()
 {
@@ -99,11 +93,8 @@ void AFourDCharacter::Tick(float DeltaTime)
 	}
 
 	// applys opacity if on a different slice
-	AMyPlayerState* state = GetPlayerState<AMyPlayerState>();
-	if (state != nullptr)
-	{
-		state->sliceOpacity(this);
-	}
+	sliceOpacity();
+	
 
 }
 
@@ -221,7 +212,7 @@ void AFourDCharacter::Server_TagOtherPlayer_Implementation()
 	{
 		if (AFourDCharacter* OtherPlayer = Cast<AFourDCharacter>(Hit.GetActor()))
 		{
-			if (OtherPlayer != this && !OtherPlayer->Tagged)
+			if (OtherPlayer != this && !OtherPlayer->Tagged && FMath::Abs(this->GetDimensionW() - OtherPlayer->GetDimensionW()) <= 0.5f)
 			{
 				NewTaggedPlayer = OtherPlayer;
 				break;
@@ -239,9 +230,42 @@ void AFourDCharacter::Server_TagOtherPlayer_Implementation()
 	}
 }
 
-bool AFourDCharacter::Server_TagOtherPlayer_Validate() { return true; }
+void AFourDCharacter::Server_SetDimensionW_Implementation(float newW)
+{
+	dimensionW = newW;
+}
 
-FVector AFourDCharacter::GetLocation() const { return location; }
+void AFourDCharacter::sliceOpacity()
+{
+	TArray<AActor*> allPlayers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFourDCharacter::StaticClass(), allPlayers);
+
+	for (int i = 0; i < allPlayers.Num(); ++i)
+	{
+		AFourDCharacter* otherPlayer = Cast<AFourDCharacter>(allPlayers[i]);
+		if (otherPlayer != nullptr && otherPlayer != this)
+		{
+
+			if (FMath::Abs(this->dimensionW - otherPlayer->dimensionW) > 0.5f)
+			{
+				if (otherPlayer->playerMaterial)
+				{
+					otherPlayer->playerMaterial->SetScalarParameterValue(TEXT("Opacity Mask"), 0.25f);
+				}
+
+			}
+			else
+			{
+				if (otherPlayer->playerMaterial)
+				{
+					otherPlayer->playerMaterial->SetScalarParameterValue(TEXT("Opacity Mask"), 1.0f);
+				}
+
+			}
+		}
+	}
+}
+
 float AFourDCharacter::GetDimensionW() const { return dimensionW; }
 bool AFourDCharacter::GetTagged() const { return Tagged; }
 void AFourDCharacter::SetTagged(bool tagged) { Tagged = tagged; }

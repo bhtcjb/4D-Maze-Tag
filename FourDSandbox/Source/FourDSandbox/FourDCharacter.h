@@ -2,7 +2,6 @@
 
 #pragma once
 
-#include "MyPlayerState.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -35,17 +34,9 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	FVector GetLocation() const;
 	float GetDimensionW() const;
 	bool GetTagged() const;
 	void SetTagged(bool tagged);
-
-
-	UPROPERTY(VisibleAnywhere, Category = "Material")
-	UMaterialInstanceDynamic* playerMaterial;
-
-	UFUNCTION(Server, Reliable)
-	void Server_SetDimensionW(float newW);
 
 protected:
 	// Called when the game starts or when spawned
@@ -74,11 +65,15 @@ protected:
 	void TagPlayer(float clicked);
 
 	// set up tag server logic
-	UFUNCTION(Server, Reliable, WithValidation)
+	UFUNCTION(Server, Reliable)
 	void Server_TagOtherPlayer();
-	bool Server_TagOtherPlayer_Validate();
-	void Server_TagOtherPlayer_Implementation();
 
+	// set up w slice server logic
+	UFUNCTION(Server, Reliable)
+	void Server_SetDimensionW(float newW);
+	
+	// diminishes opacity of other characters if not in same slice
+	void sliceOpacity();
 private: 
 	// add camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
@@ -88,22 +83,13 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Player")
 	UStaticMeshComponent* playerMesh;
 
-	// UPROPERTY allows variable dimensionW to be editable in UE
-	UPROPERTY(EditAnywhere, Category = "4D Position")
-	float dimensionW;
+	UPROPERTY(VisibleAnywhere, Category = "Material")
+	UMaterialInstanceDynamic* playerMaterial;
 
-	UPROPERTY(EditAnywhere, Category = "3D Position")
-	FVector location;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float MoveSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float RotateSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Gameplay")
+	UPROPERTY(VisibleAnywhere, Category = "Gameplay")
 	float TagRange;
 
 	UPROPERTY(Replicated)
 	bool Tagged;
+
 };
