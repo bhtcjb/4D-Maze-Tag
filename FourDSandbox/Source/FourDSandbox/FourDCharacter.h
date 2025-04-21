@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include "MyPlayerState.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Camera/CameraComponent.h"
@@ -36,6 +37,12 @@ public:
 	// add character mesh
 	UPROPERTY(VisibleAnywhere, Category = "Player")
 	UStaticMeshComponent* playerMesh;
+
+	UPROPERTY(VisibleAnywhere, Category = "Material")
+	UMaterialInstanceDynamic* playerMaterial;
+
+	UFUNCTION(Server, Reliable)
+	void Server_SetDimensionW(float newW);
 
 protected:
 	// Called when the game starts or when spawned

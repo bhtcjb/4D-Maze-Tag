@@ -5,7 +5,8 @@
 
 AMyGameModeBase::AMyGameModeBase()
 {
-    DefaultPawnClass = AFourDCharacter::StaticClass(); 
+    DefaultPawnClass = AFourDCharacter::StaticClass();
+    PlayerStateClass = AMyPlayerState::StaticClass();
     HUDClass = AMainHUD::StaticClass();
 
 	bUseSeamlessTravel = true;
@@ -22,6 +23,7 @@ void AMyGameModeBase::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
   
+
 }
 
 void AMyGameModeBase::Logout(AController* Exiting)

@@ -49,14 +49,38 @@ AFourDCharacter::AFourDCharacter()
 
 }
 
+void AFourDCharacter::Server_SetDimensionW_Implementation(float newW)
+{
+	dimensionW = newW;
+}
+
+
 // Called when the game starts or when spawned
 void AFourDCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// set dynamic material
+	UMaterialInterface* material = playerMesh->GetMaterial(0);
+	if (material != nullptr)
+	{
+		// turn into dynamic material for changing opacity
+		playerMaterial = UMaterialInstanceDynamic::Create(material, this);
+
+		if (playerMaterial != nullptr)
+		{
+			playerMesh->SetMaterial(0, playerMaterial);
+
+			playerMaterial->SetScalarParameterValue(TEXT("Opacity Mask"), 1.0f);
+		}
+	}
+
+
 }
 
 void AFourDCharacter::PossessedBy(AController* NewController) {
 	Super::PossessedBy(NewController);
+
 	if (APlayerController* PC = Cast<APlayerController>(NewController)) {
 		PC->SetViewTarget(this);
 		UE_LOG(LogTemp, Log, TEXT("Possessed by %s, view target set (Role: %d)"), *PC->GetName(), (int32)GetLocalRole());
@@ -80,6 +104,14 @@ void AFourDCharacter::Tick(float DeltaTime)
 		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
 		playerMesh->SetWorldRotation(meshRotation);
 	}
+
+	// applys opacity if on a different slice
+	AMyPlayerState* state = GetPlayerState<AMyPlayerState>();
+	if (state != nullptr)
+	{
+		state->sliceOpacity(this);
+	}
+
 }
 
 // Called to bind functionality to input
@@ -138,7 +170,17 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
 
 		// clamp to ensure user stays within bounds of level
-		dimensionW = FMath::Clamp(dimensionW, -3.0f, 4.0f);
+		float newW = FMath::Clamp(dimensionW, -3.0f, 4.0f);
+
+		if (HasAuthority()) // Server updates dimensionW
+		{
+			dimensionW = newW;
+		}
+		else // If on a client, request server to change dimensionW
+		{
+			Server_SetDimensionW(newW);
+		}
+
 
 		// broadcast event to the objects
 		wChangeEvent.Broadcast(dimensionW);
