@@ -6,8 +6,6 @@
 AFourDCharacter::AFourDCharacter()
 {
 	dimensionW = 0.0f;
-	MoveSpeed = 1.5f;
-	RotateSpeed = 1.0f;
 	TagRange = 200.0f;
 	Tagged = false;
 
@@ -232,12 +230,6 @@ void AFourDCharacter::Server_TagOtherPlayer_Implementation()
 	}
 }
 
-void AFourDCharacter::AdjustSpeed()
-{
-	// Adjust speed when collecting a coin
-	MoveSpeed += 0.1f;
-}
-
 void AFourDCharacter::Server_SetDimensionW_Implementation(float newW)
 {
 	dimensionW = newW;
@@ -277,7 +269,3 @@ void AFourDCharacter::sliceOpacity()
 float AFourDCharacter::GetDimensionW() const { return dimensionW; }
 bool AFourDCharacter::GetTagged() const { return Tagged; }
 void AFourDCharacter::SetTagged(bool tagged) { Tagged = tagged; }
-float AFourDCharacter::GetSpeed() const { return MoveSpeed; }
-void AFourDCharacter::SetSpeed(float speed) { MoveSpeed = speed; }
-int32 AFourDCharacter::GetCoinCount() const { return CoinCount; }
-void AFourDCharacter::SetCoinCount(int32 count) { CoinCount = count; AdjustSpeed(); }

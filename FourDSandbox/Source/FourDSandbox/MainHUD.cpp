@@ -26,10 +26,9 @@ void AMainHUD::DrawHUD()
 
     if (PlayerCharacter) {
         // Format the dimensionW value
-        FString WText = FString::Printf(TEXT("W: %.2f\nTagged: %d\nCoin: %d"),
+        FString WText = FString::Printf(TEXT("W: %.2f\nTagged: %d"),
             PlayerCharacter->GetDimensionW(),
-            (PlayerCharacter->GetTagged()),
-            PlayerCharacter->GetCoinCount());
+            (PlayerCharacter->GetTagged()));
 
         // Calculate text size
         float TextWidth, TextHeight;
