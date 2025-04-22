@@ -30,7 +30,6 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	FVector GetLocation() const;
 	float GetDimensionW() const;
 	bool GetTagged() const;
 	void SetTagged(bool tagged);
@@ -39,10 +38,10 @@ public:
 	int32 GetCoinCount() const;
 	void SetCoinCount(int32 count);
 
-
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
+
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 	// Called to bind functionality to input
@@ -75,6 +74,12 @@ protected:
 	void Server_TagOtherPlayer_Implementation();
 
 private:
+	// set up w slice server logic
+	UFUNCTION(Server, Reliable)
+	void Server_SetDimensionW(float newW);
+	
+	// diminishes opacity of other characters if not in same slice
+	void sliceOpacity();
 	// add camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* playerCamera;
@@ -83,24 +88,15 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Player")
 	UStaticMeshComponent* playerMesh;
 
-	// UPROPERTY allows variable dimensionW to be editable in UE
-	UPROPERTY(EditAnywhere, Category = "4D Position")
-	float dimensionW;
+	UPROPERTY(VisibleAnywhere, Category = "Material")
+	UMaterialInstanceDynamic* playerMaterial;
 
-	UPROPERTY(EditAnywhere, Category = "3D Position")
-	FVector location;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float MoveSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Speed")
-	float RotateSpeed;
-
-	UPROPERTY(EditAnywhere, Category = "Gameplay")
+	UPROPERTY(VisibleAnywhere, Category = "Gameplay")
 	float TagRange;
 
 	UPROPERTY(Replicated)
 	bool Tagged;
 
 	int32 CoinCount;
+
 };

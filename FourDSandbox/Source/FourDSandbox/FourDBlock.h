@@ -51,4 +51,6 @@ private:
 
     // helper for createMesh, constructs the mesh for the 3D slice
     void updateMesh(const TArray<FVector>& slicedVertices) override;
+
+    friend class TestFunctions;
 };

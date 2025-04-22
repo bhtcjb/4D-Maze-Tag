@@ -86,7 +86,7 @@ void AFourDBlock::createObject()
         FourDPoints(startGeometry.x, startGeometry.y, endGeometry.z, endGeometry.w),      // 12
         FourDPoints(endGeometry.x, startGeometry.y, endGeometry.z, endGeometry.w),        // 13
         FourDPoints(endGeometry.x, endGeometry.y, endGeometry.z, endGeometry.w),          // 14
-        FourDPoints(startGeometry.x, endGeometry.y, endGeometry.z, endGeometry.w),        // 15
+        FourDPoints(startGeometry.x, endGeometry.y, endGeometry.z, endGeometry.w)         // 15
     };
 
     // clear previous contents

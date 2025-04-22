@@ -56,10 +56,28 @@ AFourDCharacter::AFourDCharacter()
 void AFourDCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// set dynamic material
+	UMaterialInterface* material = playerMesh->GetMaterial(0);
+	if (material != nullptr)
+	{
+		// turn into dynamic material for changing opacity
+		playerMaterial = UMaterialInstanceDynamic::Create(material, this);
+
+		if (playerMaterial != nullptr)
+		{
+			playerMesh->SetMaterial(0, playerMaterial);
+
+			playerMaterial->SetScalarParameterValue(TEXT("Opacity Mask"), 1.0f);
+		}
+	}
+
+
 }
 
 void AFourDCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AFourDCharacter, dimensionW);
 	DOREPLIFETIME(AFourDCharacter, Tagged);
 }
 
@@ -75,6 +93,11 @@ void AFourDCharacter::Tick(float DeltaTime)
 		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
 		playerMesh->SetWorldRotation(meshRotation);
 	}
+
+	// applys opacity if on a different slice
+	sliceOpacity();
+	
+
 }
 
 // Called to bind functionality to input
@@ -93,12 +116,32 @@ void AFourDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AFourDCharacter::forwardBackMovement(float magnitude)
 {
-	AddMovementInput(GetActorForwardVector(), magnitude * MoveSpeed);
+	if (Controller && magnitude != 0.0f) // 0.0f means no input, thus we should disregard it
+	{
+		// get where camera is facing
+		FRotator camera = Controller->GetControlRotation();
+
+		// find forward direction
+		FVector forwardDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::X);
+
+		// move forward in direction of camera
+		AddMovementInput(forwardDirection, magnitude);
+	}
 }
 
 void AFourDCharacter::rightLeftMovement(float magnitude)
 {
-	AddMovementInput(GetActorRightVector(), magnitude * MoveSpeed);
+	if (Controller != nullptr && magnitude != 0.0f)
+	{
+		// get where camera is facing
+		FRotator camera = Controller->GetControlRotation();
+
+		// find right left axis direction
+		FVector rightLeftDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::Y);
+
+		// move right or left relative to the direction of camera
+		AddMovementInput(rightLeftDirection, magnitude);
+	}
 
 }
 
@@ -112,7 +155,17 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 		dimensionW += magnitude * speed * GetWorld()->DeltaTimeSeconds;
 
 		// clamp to ensure user stays within bounds of level
-		dimensionW = FMath::Clamp(dimensionW, -3.0f, 4.0f);
+		float newW = FMath::Clamp(dimensionW, -3.0f, 4.0f);
+
+		if (HasAuthority()) // Server updates dimensionW
+		{
+			dimensionW = newW;
+		}
+		else // If on a client, request server to change dimensionW
+		{
+			Server_SetDimensionW(newW);
+		}
+
 
 		// broadcast event to the objects
 		wChangeEvent.Broadcast(dimensionW);
@@ -122,7 +175,11 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 
 void AFourDCharacter::turnRightLeft(float magnitude)
 {
-	AddControllerYawInput(magnitude * RotateSpeed);
+	if (magnitude != 0.0f)
+	{
+		// yaw means left right, moves yaw
+		AddControllerYawInput(magnitude);
+	}
 
 }
 
@@ -157,7 +214,7 @@ void AFourDCharacter::Server_TagOtherPlayer_Implementation()
 	{
 		if (AFourDCharacter* OtherPlayer = Cast<AFourDCharacter>(Hit.GetActor()))
 		{
-			if (OtherPlayer != this && !OtherPlayer->Tagged)
+			if (OtherPlayer != this && !OtherPlayer->Tagged && FMath::Abs(this->GetDimensionW() - OtherPlayer->GetDimensionW()) <= 0.5f)
 			{
 				NewTaggedPlayer = OtherPlayer;
 				break;
@@ -181,7 +238,42 @@ void AFourDCharacter::AdjustSpeed()
 	MoveSpeed += 0.1f;
 }
 
-FVector AFourDCharacter::GetLocation() const { return location; }
+void AFourDCharacter::Server_SetDimensionW_Implementation(float newW)
+{
+	dimensionW = newW;
+}
+
+void AFourDCharacter::sliceOpacity()
+{
+	TArray<AActor*> allPlayers;
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), AFourDCharacter::StaticClass(), allPlayers);
+
+	for (int i = 0; i < allPlayers.Num(); ++i)
+	{
+		AFourDCharacter* otherPlayer = Cast<AFourDCharacter>(allPlayers[i]);
+		if (otherPlayer != nullptr && otherPlayer != this)
+		{
+
+			if (FMath::Abs(this->dimensionW - otherPlayer->dimensionW) > 0.5f)
+			{
+				if (otherPlayer->playerMaterial)
+				{
+					otherPlayer->playerMaterial->SetScalarParameterValue(TEXT("Opacity Mask"), 0.25f);
+				}
+
+			}
+			else
+			{
+				if (otherPlayer->playerMaterial)
+				{
+					otherPlayer->playerMaterial->SetScalarParameterValue(TEXT("Opacity Mask"), 1.0f);
+				}
+
+			}
+		}
+	}
+}
+
 float AFourDCharacter::GetDimensionW() const { return dimensionW; }
 bool AFourDCharacter::GetTagged() const { return Tagged; }
 void AFourDCharacter::SetTagged(bool tagged) { Tagged = tagged; }

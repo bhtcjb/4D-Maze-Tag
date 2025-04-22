@@ -52,10 +52,10 @@ void AFourDObject::createMatrix()
     // rotation algorithm explained here
     // https://math.stackexchange.com/questions/1402362/can-rotations-in-4d-be-given-an-explicit-matrix-form
     // do rotation along X-Y plane
-    transformMatrix.M[0][0] = FMath::Cos(rotation.xY);
+    transformMatrix.M[0][0] *= FMath::Cos(rotation.xY);
     transformMatrix.M[0][1] = -FMath::Sin(rotation.xY);
     transformMatrix.M[1][0] = FMath::Sin(rotation.xY);
-    transformMatrix.M[1][1] = FMath::Cos(rotation.xY);
+    transformMatrix.M[1][1] *= FMath::Cos(rotation.xY);
 
     // do rotation along X-Z plane
     transformMatrix.M[0][0] *= FMath::Cos(rotation.xZ);
@@ -107,7 +107,6 @@ FourDPoints AFourDObject::transformVertex(const FourDPoints& vertex) const
 
 void AFourDObject::updateW(float newW)
 {
-
     translation.w = newW - startW;
     
 }
