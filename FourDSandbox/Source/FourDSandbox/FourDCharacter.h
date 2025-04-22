@@ -24,10 +24,6 @@ public:
 	// Sets default values for this character's properties
 	AFourDCharacter();
 
-	// UPROPERTY allows variable dimensionW to be editable in UE
-	UPROPERTY(EditAnywhere, Category = "4D Position", Replicated)
-	float dimensionW; // position variable for 4th dimension
-
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
 	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
 
@@ -38,6 +34,10 @@ public:
 	float GetDimensionW() const;
 	bool GetTagged() const;
 	void SetTagged(bool tagged);
+	float GetSpeed() const;
+	void SetSpeed(float speed);
+	int32 GetCoinCount() const;
+	void SetCoinCount(int32 count);
 
 
 protected:
@@ -66,13 +66,15 @@ protected:
 	// set up tag function
 	void TagPlayer(float clicked);
 
+	// Adjust speed when collect coin
+	void AdjustSpeed();
+
 	// set up tag server logic
-	UFUNCTION(Server, Reliable, WithValidation)
+	UFUNCTION(Server, Reliable)
 	void Server_TagOtherPlayer();
-	bool Server_TagOtherPlayer_Validate();
 	void Server_TagOtherPlayer_Implementation();
 
-private: 
+private:
 	// add camera
 	UPROPERTY(VisibleAnywhere, Category = "Camera")
 	UCameraComponent* playerCamera;
@@ -99,4 +101,6 @@ private:
 
 	UPROPERTY(Replicated)
 	bool Tagged;
+
+	int32 CoinCount;
 };
