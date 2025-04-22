@@ -7,7 +7,7 @@ AFourDCharacter::AFourDCharacter()
 {
 	dimensionW = 0.0f;
 	MoveSpeed = 1.5f;
-	RotateSpeed = 1.0f;
+//	RotateSpeed = 1.0f;
 	TagRange = 200.0f;
 	Tagged = false;
 
@@ -125,7 +125,7 @@ void AFourDCharacter::forwardBackMovement(float magnitude)
 		FVector forwardDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::X);
 
 		// move forward in direction of camera
-		AddMovementInput(forwardDirection, magnitude);
+		AddMovementInput(forwardDirection, magnitude * MoveSpeed);
 	}
 }
 
@@ -140,7 +140,7 @@ void AFourDCharacter::rightLeftMovement(float magnitude)
 		FVector rightLeftDirection = FRotationMatrix(camera).GetUnitAxis(EAxis::Y);
 
 		// move right or left relative to the direction of camera
-		AddMovementInput(rightLeftDirection, magnitude);
+		AddMovementInput(rightLeftDirection, magnitude * MoveSpeed);
 	}
 
 }

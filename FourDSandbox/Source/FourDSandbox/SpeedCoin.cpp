@@ -12,9 +12,11 @@ ASpeedCoin::ASpeedCoin()
 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+
 	CoinMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CoinMesh"));
 	RootComponent = CoinMesh;
 	CoinMesh->SetSimulatePhysics(true);
+	CoinMesh->SetGenerateOverlapEvents(true);
 	CoinMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	CoinMesh->SetCollisionObjectType(ECC_WorldDynamic);
 	CoinMesh->SetCollisionResponseToAllChannels(ECR_Block);
@@ -68,7 +70,7 @@ void ASpeedCoin::BeginPlay()
 		// Call Server_Jump every 3 seconds
 		GetWorldTimerManager().SetTimer(JumpTimerHandle, this, &ASpeedCoin::Server_Jump, 3.0f, true);
 	
-		CoinMesh->OnComponentHit.AddDynamic(this, &ASpeedCoin::OnContact);
+		CoinMesh->OnComponentBeginOverlap.AddDynamic(this, &ASpeedCoin::OnContact);
 	}
 }
 
@@ -88,24 +90,38 @@ void ASpeedCoin::OnRep_IsHidden()
 	}
 }
 
-void ASpeedCoin::OnContact(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+//void ASpeedCoin::OnContact(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, FVector NormalImpulse, const FHitResult& Hit)
+//{
+//	if (AFourDCharacter* Player = Cast<AFourDCharacter>(OtherActor))
+//	{
+//		if (HasAuthority() && !IsHidden)
+//		{
+//			Player->SetCoinCount(Player->GetCoinCount() + 1);
+//			Server_SetHidden(true);
+//			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("JumpingActor hidden!"));
+//		}
+//	}
+//}
+
+void ASpeedCoin::OnContact(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComponent, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	if (AFourDCharacter* Player = Cast<AFourDCharacter>(OtherActor))
 	{
-		if (HasAuthority() && !IsHidden)
+		if (/*HasAuthority() &&*/ !IsHidden)
 		{
 			Player->SetCoinCount(Player->GetCoinCount() + 1);
 			Server_SetHidden(true);
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("JumpingActor hidden!"));
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Coin collected!"));
 		}
 	}
 }
-
 
 // Called every frame
 void ASpeedCoin::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+
 	FRotator NewRotaion = CoinMesh->GetComponentRotation();
 	NewRotaion.Yaw += 20.0f * DeltaTime;
 	CoinMesh->SetWorldRotation(NewRotaion);

@@ -24,6 +24,10 @@ public:
 	// Sets default values for this character's properties
 	AFourDCharacter();
 
+	// UPROPERTY allows variable dimensionW to be editable in UE
+	UPROPERTY(EditAnywhere, Category = "4D Position", Replicated)
+	float dimensionW; // position variable for 4th dimension
+
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
 	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
 
@@ -90,6 +94,9 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Material")
 	UMaterialInstanceDynamic* playerMaterial;
+
+	UPROPERTY(VisibleAnywhere, Category = "Gameplay")
+	float MoveSpeed;
 
 	UPROPERTY(VisibleAnywhere, Category = "Gameplay")
 	float TagRange;
