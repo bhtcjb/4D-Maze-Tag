@@ -50,7 +50,7 @@ void ASpeedCoin::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (HasAuthority())
+	if (HasAuthority()) // added by Khoa
 	{
 		// Adjust spawn position with sweep to ensure on ground.
 		FVector Start = GetActorLocation();
@@ -70,14 +70,14 @@ void ASpeedCoin::BeginPlay()
 		// Call Server_Jump every 3 seconds
 		GetWorldTimerManager().SetTimer(JumpTimerHandle, this, &ASpeedCoin::Server_Jump, 3.0f, true);
 	
-		CoinMesh->OnComponentBeginOverlap.AddDynamic(this, &ASpeedCoin::OnContact);
+		CoinMesh->OnComponentBeginOverlap.AddDynamic(this, &ASpeedCoin::OnContact); // -Blake changed it to check overlap to see if that would work
 	}
 }
 
 void ASpeedCoin::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(ASpeedCoin, IsHidden);
+	DOREPLIFETIME(ASpeedCoin, IsHidden); // added by Khoa
 }
 
 void ASpeedCoin::OnRep_IsHidden()
@@ -122,7 +122,7 @@ void ASpeedCoin::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 
-	FRotator NewRotaion = CoinMesh->GetComponentRotation();
+	FRotator NewRotaion = CoinMesh->GetComponentRotation(); // added by Khoa
 	NewRotaion.Yaw += 20.0f * DeltaTime;
 	CoinMesh->SetWorldRotation(NewRotaion);
 }

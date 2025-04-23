@@ -1,9 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "FourDObject.h"
-
-
 
 // Sets default values
 AFourDObject::AFourDObject()
@@ -19,11 +14,11 @@ AFourDObject::AFourDObject()
 }
 
 // Called when the game starts or when spawned
-void AFourDObject::BeginPlay()
+void AFourDObject::BeginPlay() 
 {
     Super::BeginPlay();
 
-    // set up to change W when event is broadcast from character
+    // set up to change W when event is broadcast from character            // added by Blake
     ACharacter* player = UGameplayStatics::GetPlayerCharacter(GetWorld(), 0); // find character in scene
     AFourDCharacter* fourDPlayer = Cast<AFourDCharacter>(player); // attempt to cast to FourDCharacter
     if (fourDPlayer != nullptr) 
@@ -40,8 +35,6 @@ void AFourDObject::BeginPlay()
 void AFourDObject::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
-
-  
 }
 
 void AFourDObject::createMatrix()
@@ -108,8 +101,5 @@ FourDPoints AFourDObject::transformVertex(const FourDPoints& vertex) const
 void AFourDObject::updateW(float newW)
 {
     translation.w = newW - startW;
-    
 }
-
-
 

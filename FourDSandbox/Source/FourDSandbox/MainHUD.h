@@ -18,7 +18,10 @@ class FOURDSANDBOX_API AMainHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+    // Author: Khoa
 	AMainHUD();
+
+    // Author: Epic Games
     virtual void DrawHUD() override;
 
 protected:

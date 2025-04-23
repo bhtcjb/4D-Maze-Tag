@@ -52,13 +52,67 @@ AFourDCharacter::AFourDCharacter()
 
 }
 
+// Called every frame
+void AFourDCharacter::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	// update the mesh rotation to match the camera's rotation
+	if (playerCamera != nullptr && playerMesh != nullptr) // added by Blake
+	{
+		FRotator cameraRotation = playerCamera->GetComponentRotation();
+		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
+		playerMesh->SetWorldRotation(meshRotation);
+	}
+
+	// applys opacity if on a different slice
+	sliceOpacity();
+	
+
+}
+
+float AFourDCharacter::GetDimensionW() const 
+{
+	return dimensionW; 
+}
+
+bool AFourDCharacter::GetTagged() const 
+{
+	return Tagged;
+}
+
+void AFourDCharacter::SetTagged(bool tagged)
+{
+	Tagged = tagged; 
+}
+
+float AFourDCharacter::GetSpeed() const 
+{
+	return MoveSpeed; 
+}
+
+void AFourDCharacter::SetSpeed(float speed) 
+{
+	MoveSpeed = speed; 
+}
+
+int32 AFourDCharacter::GetCoinCount() const
+{
+	return CoinCount; 
+}
+
+void AFourDCharacter::SetCoinCount(int32 count)
+{
+	CoinCount = count; AdjustSpeed(); 
+}
+
 // Called when the game starts or when spawned
 void AFourDCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 
 	// set dynamic material
-	UMaterialInterface* material = playerMesh->GetMaterial(0);
+	UMaterialInterface* material = playerMesh->GetMaterial(0); // added by Blake
 	if (material != nullptr)
 	{
 		// turn into dynamic material for changing opacity
@@ -71,34 +125,14 @@ void AFourDCharacter::BeginPlay()
 			playerMaterial->SetScalarParameterValue(TEXT("Opacity Mask"), 1.0f);
 		}
 	}
-
-
 }
 
 void AFourDCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AFourDCharacter, dimensionW);
-	DOREPLIFETIME(AFourDCharacter, Tagged);
+	DOREPLIFETIME(AFourDCharacter, dimensionW); // added by Blake
+	DOREPLIFETIME(AFourDCharacter, Tagged); // added by Khoa
 }
 
-// Called every frame
-void AFourDCharacter::Tick(float DeltaTime)
-{
-	Super::Tick(DeltaTime);
-
-	// update the mesh rotation to match the camera's rotation
-	if (playerCamera != nullptr && playerMesh != nullptr)
-	{
-		FRotator cameraRotation = playerCamera->GetComponentRotation();
-		FRotator meshRotation(0.0f, cameraRotation.Yaw - 90.0f, 0.0f);
-		playerMesh->SetWorldRotation(meshRotation);
-	}
-
-	// applys opacity if on a different slice
-	sliceOpacity();
-	
-
-}
 
 // Called to bind functionality to input
 void AFourDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -273,11 +307,3 @@ void AFourDCharacter::sliceOpacity()
 		}
 	}
 }
-
-float AFourDCharacter::GetDimensionW() const { return dimensionW; }
-bool AFourDCharacter::GetTagged() const { return Tagged; }
-void AFourDCharacter::SetTagged(bool tagged) { Tagged = tagged; }
-float AFourDCharacter::GetSpeed() const { return MoveSpeed; }
-void AFourDCharacter::SetSpeed(float speed) { MoveSpeed = speed; }
-int32 AFourDCharacter::GetCoinCount() const { return CoinCount; }
-void AFourDCharacter::SetCoinCount(int32 count) { CoinCount = count; AdjustSpeed(); }

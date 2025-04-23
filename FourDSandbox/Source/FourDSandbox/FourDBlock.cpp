@@ -26,28 +26,31 @@ AFourDBlock::AFourDBlock() : AFourDObject()
 
 }
 
-// Called when the game starts or when spawned
-void AFourDBlock::BeginPlay()
-{
-    Super::BeginPlay();
-
-    UMaterialInterface* material = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Wall"));
-    mesh->SetMaterial(0, material);
-    mesh->MarkRenderStateDirty();
-}
-
 // Called every frame
 void AFourDBlock::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
     // call every tick for dynamic changes
-    sliceWidth = endGeometry.w - startGeometry.w;
+    sliceWidth = endGeometry.w - startGeometry.w; // added by Blake
     createMatrix();
     createObject();
     createMesh();
 
 }
+
+// Called when the game starts or when spawned
+void AFourDBlock::BeginPlay()
+{
+    Super::BeginPlay();
+
+    // make consistant the material
+    UMaterialInterface* material = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/StarterContent/Materials/M_Basic_Wall")); // added by Blake
+    mesh->SetMaterial(0, material);
+    mesh->MarkRenderStateDirty();
+}
+
+
 
 #if WITH_EDITOR
 void AFourDBlock::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent)
@@ -55,7 +58,7 @@ void AFourDBlock::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedE
     Super::PostEditChangeProperty(PropertyChangedEvent);
 
     // allows dynamic changes if trying to control from editor
-    sliceWidth = endGeometry.w - startGeometry.w;
+    sliceWidth = endGeometry.w - startGeometry.w; // added by Blake
     createMatrix();
     createObject();
     createMesh();
