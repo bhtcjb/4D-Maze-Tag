@@ -15,6 +15,9 @@ AFourDCharacter::AFourDCharacter()
 	playerMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PlayerMesh"));
 	playerCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("PlayerCamera"));
 
+	// for highlight
+	playerMesh->SetRenderCustomDepth(true);
+	playerMesh->SetCustomDepthStencilValue(0);
 
 	// attach camera to player
 	playerCamera->SetupAttachment(RootComponent);
