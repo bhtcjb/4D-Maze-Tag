@@ -84,7 +84,6 @@ void TestFunctions::TestTransformVertex() const
 		std::cout << "[TestTransformVertex] 0 transformation INCORRECT OUTPUT" << std::endl;
 	}
 
-
 	testPoint = testBlock->transformVertex(FourDPoints(1, -1, 2, -2));
 
 	comparePoint.x = 1;
@@ -140,7 +139,6 @@ void TestFunctions::TestCreateObject() const
 	testBlock->transformMatrix.M[1][1] = -1;
 	testBlock->transformMatrix.M[2][2] = -1;
 	testBlock->transformMatrix.M[3][3] = 0;
-
 
 	testBlock->startGeometry.x = -1;
 	testBlock->startGeometry.y = -1;
@@ -260,13 +258,13 @@ void TestFunctions::TestSlice4DPlane() const
 
 	if (testSlicedVertices == compareSlicedVertices)
 	{
-		UE_LOG(TestFunctionsLog, Warning, TEXT("[TestSlice4DPlane] slice SUCCESS"));
-		std::cout << "[TestSlice4DPlane] slice SUCCESS" << std::endl;
+		UE_LOG(TestFunctionsLog, Warning, TEXT("[TestSlice4DPlane] slice 90 deg rotation SUCCESS"));
+		std::cout << "[TestSlice4DPlane] slice 90 deg rotation SUCCESS" << std::endl;
 	}
 	else
 	{
-		UE_LOG(TestFunctionsLog, Warning, TEXT("[TestSlice4DPlane] slice INCORRECT OUTPUT"));
-		std::cout << "[TestSlice4DPlane] slice INCORRECT OUTPUT" << std::endl;
+		UE_LOG(TestFunctionsLog, Warning, TEXT("[TestSlice4DPlane] slice 90 deg rotation INCORRECT OUTPUT"));
+		std::cout << "[TestSlice4DPlane] slice 90 deg rotation INCORRECT OUTPUT" << std::endl;
 	}
 
 	testBlock->Destroy();

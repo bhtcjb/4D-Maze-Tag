@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "FourDRoad.h"
 #include "Components/InstancedStaticMeshComponent.h" // Add this include at the top of the file
 
@@ -17,7 +14,6 @@ AFourDRoad::AFourDRoad()
 
 	// Set up the road structure
 	SetupRoad();
-
 }
 
 // Called when the game starts or when spawned
@@ -46,7 +42,6 @@ void AFourDRoad::Tick(float DeltaTime)
 		}
 		UpdateCrossSection();
 	}
-
 }
 
 void AFourDRoad::SetupRoad()

@@ -18,9 +18,15 @@ class FOURDSANDBOX_API AMyGameModeBase : public AGameModeBase
 	GENERATED_BODY()
 
 public:
+	// Author: Blake
 	AMyGameModeBase();
 
+	// Author: Epic Games
 	void StartPlay() override;
+
+	// Author: Epic Games
 	virtual void PostLogin(APlayerController* NewPlayer) override;
+
+	// Author: Epic Games
 	virtual void Logout(AController* Exiting) override;
 };

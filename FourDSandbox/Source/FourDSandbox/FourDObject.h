@@ -59,17 +59,21 @@ class FOURDSANDBOX_API AFourDObject : public AActor
 	GENERATED_BODY()
 	
 public:	
+    // Author: Blake
 	// Sets default values for this actor's properties
 	AFourDObject();
 
 protected:
+    // Author: Epic Games
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 public:	
+    // Author: Epic Games
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+    // These variables must be public in order to control in editor
     // TArray is UE's dynamic array type
     UPROPERTY(VisibleAnywhere, Category = "Geometry")
     TArray<FourDPoints> vertices; // all of the 4D object's vertices
@@ -93,28 +97,35 @@ public:
     UPROPERTY(VisibleAnywhere, Category = "Mesh")
     UProceduralMeshComponent* mesh; // mesh that can be drawn to denoted vertices dynamically
 
+protected:
+    // Author: Blake
     // creates matrix to use to apply transformations
     void createMatrix();
 
+    // Author: Blake
     // creates vertices for a 4D object
     // createMatrix() should be called prior
     virtual void createObject() PURE_VIRTUAL(AFourDObject::createObject, );
 
+    // Author: Blake
     // creates 3D mesh from 4D vertices
     // createMatrix and createObject should be called prior
     virtual void createMesh() PURE_VIRTUAL(AFourDObject::createMesh, );
 
-protected:
+    // Author: Blake
     // helper for createObject(), multiplies one vertex by the transformation matrix
     FourDPoints transformVertex(const FourDPoints& vertex) const;
 
+    // Author: Blake
     // helper for createMesh(), slices 8 3D vertices from the 4D vertices within slice range
     virtual TArray<FVector> slice4DPlane() PURE_VIRTUAL(AFourDObject::slice4DPlane, return TArray<FVector>({ FVector() }););
 
+    // Author: Blake
     // helper for createMesh, constructs the mesh for the 3D slice
     virtual void updateMesh(const TArray<FVector>& slicedVertices) PURE_VIRTUAL(AFourDObject::updateMesh, );
 
 private:
+    // Author: Blake
     // helper for BeginPlay() event setup to calculate new W during play
     UFUNCTION()
     void updateW(float newW);

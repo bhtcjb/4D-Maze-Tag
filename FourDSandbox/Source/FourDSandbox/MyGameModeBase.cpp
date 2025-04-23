@@ -5,8 +5,8 @@
 
 AMyGameModeBase::AMyGameModeBase()
 {
-    DefaultPawnClass = AFourDCharacter::StaticClass();
-    HUDClass = AMainHUD::StaticClass();
+    DefaultPawnClass = AFourDCharacter::StaticClass(); // added by Blake
+    HUDClass = AMainHUD::StaticClass(); // added by Khoa
 
 	bUseSeamlessTravel = true;
 }
@@ -15,14 +15,14 @@ void AMyGameModeBase::StartPlay()
 {
     Super::StartPlay();
 
-    TestFunctions test;
+    TestFunctions test; // added by Blake
 }
 
 void AMyGameModeBase::PostLogin(APlayerController* NewPlayer)
 {
 	Super::PostLogin(NewPlayer);
   
-    if (NewPlayer && NewPlayer->PlayerState)
+    if (NewPlayer && NewPlayer->PlayerState) // added by Khoa
     {
         if (GetNumPlayers() == 1)
         {
@@ -39,5 +39,5 @@ void AMyGameModeBase::PostLogin(APlayerController* NewPlayer)
 
 void AMyGameModeBase::Logout(AController* Exiting)
 {
-	Super::Logout(Exiting);
+	Super::Logout(Exiting); // added by Khoa
 }

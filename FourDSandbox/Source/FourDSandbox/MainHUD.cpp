@@ -1,6 +1,3 @@
-// Fill out your copyright notice in the Description page of Project Settings.
-
-
 #include "MainHUD.h"
 
 AMainHUD::AMainHUD()
@@ -15,7 +12,7 @@ void AMainHUD::DrawHUD()
 {
     Super::DrawHUD();
 
-    if (!Canvas || !HUDFont) return;
+    if (!Canvas || !HUDFont) return; // added by Khoa
 
     if (!PlayerCharacter) {
         APlayerController* PC = GetOwningPlayerController();
