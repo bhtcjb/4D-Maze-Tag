@@ -29,7 +29,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "4D Position", Replicated)
 	float dimensionW; // position variable for 4th dimension
 
-
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
 	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
 
@@ -66,7 +65,7 @@ protected:
 	// Author: Epic Games
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-private:
+public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 

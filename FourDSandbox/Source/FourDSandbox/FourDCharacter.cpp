@@ -71,7 +71,6 @@ void AFourDCharacter::Tick(float DeltaTime)
 	// applys opacity if on a different slice
 	sliceOpacity();
 	
-
 }
 
 float AFourDCharacter::GetDimensionW() const 
@@ -130,8 +129,10 @@ void AFourDCharacter::BeginPlay()
 	}
 }
 
-void AFourDCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const {
+void AFourDCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const 
+{
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
 	DOREPLIFETIME(AFourDCharacter, dimensionW); // added by Blake
 	DOREPLIFETIME(AFourDCharacter, Tagged); // added by Khoa
 }
@@ -194,15 +195,15 @@ void AFourDCharacter::fourthDimensionMovement(float magnitude)
 		// clamp to ensure user stays within bounds of level
 		float newW = FMath::Clamp(dimensionW, -3.0f, 4.0f);
 
-		if (HasAuthority()) // Server updates dimensionW
+		// set W to server
+		if (HasAuthority())
 		{
 			dimensionW = newW;
 		}
-		else // If on a client, request server to change dimensionW
+		else
 		{
 			Server_SetDimensionW(newW);
 		}
-
 
 		// broadcast event to the objects
 		wChangeEvent.Broadcast(dimensionW);
@@ -290,7 +291,6 @@ void AFourDCharacter::sliceOpacity()
 		AFourDCharacter* otherPlayer = Cast<AFourDCharacter>(allPlayers[i]);
 		if (otherPlayer != nullptr && otherPlayer != this)
 		{
-
 			if (FMath::Abs(this->dimensionW - otherPlayer->dimensionW) > 0.5f)
 			{
 				if (otherPlayer->playerMaterial)
