@@ -3,7 +3,7 @@
 
 Ryhan Shah - Lab 4
 Blake Turman - Lab 3
-Khoa - Lab 3
+Khoa Ta - Lab 3
 
 
 The project decided upon was creating a 4D maze in Unreal Engine 5.
