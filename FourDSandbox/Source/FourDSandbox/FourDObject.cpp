@@ -25,7 +25,6 @@ void AFourDObject::BeginPlay()
     {
         // set to change dynamically
         fourDPlayer->wChangeEvent.AddDynamic(this, &AFourDObject::updateW);
-        
     }
 
     startW = translation.w;

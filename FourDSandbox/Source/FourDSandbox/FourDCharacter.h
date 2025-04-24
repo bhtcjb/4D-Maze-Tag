@@ -75,11 +75,11 @@ private:
 
 	// Author: Blake
 	// set up left right movement
-	void rightLeftMovement(float v);
+	void rightLeftMovement(float magnitude);
 
 	// Author: Blake
 	// set up fourthDimensionalMovement
-	void fourthDimensionMovement(float v);
+	void fourthDimensionMovement(float magnitude);
 
 	// Author: Blake
 	// set up left right camera movements
