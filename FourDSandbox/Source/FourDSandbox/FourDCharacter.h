@@ -29,7 +29,6 @@ public:
 	UPROPERTY(EditAnywhere, Category = "4D Position", Replicated)
 	float dimensionW; // position variable for 4th dimension
 
-
 	UPROPERTY(VisibleAnywhere, Category = "4D Position")
 	FWChange wChangeEvent; // variable to broadcast event for changes in W to objects
 
@@ -76,11 +75,11 @@ private:
 
 	// Author: Blake
 	// set up left right movement
-	void rightLeftMovement(float v);
+	void rightLeftMovement(float magnitude);
 
 	// Author: Blake
 	// set up fourthDimensionalMovement
-	void fourthDimensionMovement(float v);
+	void fourthDimensionMovement(float magnitude);
 
 	// Author: Blake
 	// set up left right camera movements
