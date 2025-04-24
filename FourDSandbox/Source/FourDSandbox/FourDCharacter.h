@@ -65,7 +65,7 @@ protected:
 	// Author: Epic Games
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
-public:
+private:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
@@ -75,11 +75,11 @@ public:
 
 	// Author: Blake
 	// set up left right movement
-	void rightLeftMovement(float v);
+	void rightLeftMovement(float magnitude);
 
 	// Author: Blake
 	// set up fourthDimensionalMovement
-	void fourthDimensionMovement(float v);
+	void fourthDimensionMovement(float magnitude);
 
 	// Author: Blake
 	// set up left right camera movements
